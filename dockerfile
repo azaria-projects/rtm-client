@@ -45,4 +45,4 @@ WORKDIR /app
 
 EXPOSE 8300
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8300"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
