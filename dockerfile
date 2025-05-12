@@ -1,0 +1,48 @@
+# Stage 1
+FROM php:8.2-cli-alpine AS build
+
+RUN apk add --no-cache \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    libzip-dev \
+    oniguruma-dev \
+    git \
+    curl \
+    zip \
+    unzip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install mbstring gd zip
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+WORKDIR /app
+COPY . /app
+COPY .env.example /app/.env
+
+RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader --no-suggest
+
+RUN apk add --no-cache nodejs npm \
+    && rm -rf node_modules package-lock.json \
+    && npm install \
+    && npm run build
+
+RUN php artisan config:clear
+RUN php artisan config:cache
+RUN php artisan migrate
+
+# Stage 2
+FROM php:8.2-cli-alpine
+
+RUN apk add --no-cache \
+    libpng \
+    libjpeg-turbo \
+    freetype \
+    libzip
+
+COPY --from=build /app /app
+WORKDIR /app
+
+EXPOSE 8300
+
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8300"]

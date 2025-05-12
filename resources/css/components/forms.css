@@ -1,0 +1,42 @@
+.form-label {
+    color: var(--system-colors-white-primary);
+}
+
+select.form-select {
+    color: var(--system-colors-white-primary);
+    border: 1px solid var(--system-colors-black-secondary);
+    border-radius: 4px;
+    min-height: 44px;
+    background-color: var(--system-component-card-background-color);
+
+    option {
+        background-color: var(--system-component-card-background-color);
+    }
+}
+
+select.form-select:focus {
+    color: var(--system-colors-purple-secondary) !important;
+    background-color: var(--system-component-card-background-color) !important;
+    box-shadow: 0 0 0 .25rem var(--system-component-input-focus-color) !important;
+    border-color: var(--system-colors-black-secondary) !important;
+
+    option {
+        background-color: var(--system-component-card-background-color);
+    }
+}
+
+.form-control {
+    color: var(--system-colors-white-primary);
+    border: 1px solid var(--system-colors-black-secondary);
+    border-radius: 4px;
+    min-height: 44px;
+    background-color: var(--system-component-card-background-color);
+    box-shadow: none !important;
+}
+
+.form-control:focus {
+    color: var(--system-colors-purple-secondary) !important;
+    background-color: var(--system-component-card-background-color) !important;
+    box-shadow: 0 0 0 .25rem var(--system-component-input-focus-color) !important;
+    border-color: var(--system-colors-black-secondary) !important;
+}

@@ -1,0 +1,19 @@
+.dt-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .dt-buttons {
+        display: flex !important;
+        justify-content: end;
+        gap: 8px;
+        display: none !important;
+
+        button {
+            flex-grow: 0 !important;
+            width: fit-content !important;
+        }
+    }
+}
+
+
