@@ -21,7 +21,6 @@ class AuthMiddleware
     {
         try {
             $tkn = trim($_COOKIE['token'] ?? '', '"');
-
             if ($tkn == '') {
                 return redirect()->route('login');
             }
@@ -31,26 +30,31 @@ class AuthMiddleware
             
             if ($res->ok() & $res['response'] != []) {
                 $url = sprintf('%s/%s/token/refresh/%s', getenv('VITE_SERVER_URL'), getenv('VITE_SERVER_PREFIX'), $tkn);
-                $res = Http::post($url);
+                $ref = Http::post($url);
 
-                if ($res->ok() & $res['response'] != []) {
-                    $_COOKIE['token'] = $res['response'];
+                if ($res->ok() & $ref['response'] != []) {
+                    $_COOKIE['token'] = $ref['response'];
                 }
 
                 return $next($request);
             }
 
-            if ($res->ok() & $res['response'] != []) {
-                $request->cookies->remove('token');
-                $cookie = Cookie::forget('token');
-
-                return $next($request);
+            if ($res->ok() & $res['response'] == []) {
+                return redirect()
+                    ->route('login')
+                    ->withCookie(Cookie::forget('token'))
+                    ->withCookie(Cookie::forget('well'))
+                    ->with('error', 'token expired!');
             }
 
-            return redirect()->route('login')->with('error', 'token expired!');
+            return $next($request);
 
         } catch (Exception $e) {
-            return redirect()->route('login')->with('error', 'server unavailable! try accessing it later!');
+            return redirect()
+                ->route('login')
+                ->withCookie(Cookie::forget('token'))
+                ->withCookie(Cookie::forget('well'))
+                ->with('error', 'server unavailable! try accessing it later!');
         }
     }
 }

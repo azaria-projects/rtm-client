@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import collectModuleAssetsPaths from './vite-module-loader.js';
 
 async function getConfig() {
     const paths = [
@@ -26,12 +25,11 @@ async function getConfig() {
         'public/icons/tabler/tabler-icons-outline.min.css',
         'public/icons/tabler/tabler-icons.min.css',
     ];
-    const allPaths = await collectModuleAssetsPaths(paths, 'Modules');
 
     return defineConfig({
         plugins: [
             laravel({
-                input: allPaths,
+                input: paths,
                 refresh: true,
             })
         ]

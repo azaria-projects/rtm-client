@@ -16,9 +16,9 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
 Route::middleware([CookiesMiddleware::class])->group(function () {
     Route::controller(AuthController::class)->group(function () {
+        Route::get('/', 'index')->name('default');
         Route::get('/login', 'index')->name('login');
         Route::get('/request', 'register')->name('register');
     });
 });
 
-Route::get('/', function () { return view('welcome'); });

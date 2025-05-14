@@ -20,6 +20,19 @@
                     });
                 });
             });
+
+            document.querySelectorAll('.btn-home').forEach(button => {
+                button.addEventListener('click', function() {
+                    swal.fire(
+                        getSwalConfPrompt('question', 'CHANGE WELL ?', 'You will be redirected to selecting well page. Do you want to change well?')
+                    ).then((result) => {
+                        if (result.value) {
+                            window.location.href = "{{ route('rtm.select') }}";
+                            return;
+                        }
+                    });
+                });
+            });
         });
     </script>
 @endpush

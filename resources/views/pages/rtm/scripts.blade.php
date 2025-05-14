@@ -1,5 +1,7 @@
 @push('scripts-body')
     <script>
+        var noData = false;
+
         async function init() {
             getCurrentDateTimeAlt();
         }
@@ -7,24 +9,63 @@
         async function fetchRecords(rng) {
             const tkn = @json($tkn);
             const nme = @json($nme);
-            const pyd = {
+            const par = new URLSearchParams({
                 'token': tkn,
                 'start': rng['start'],
                 'end'  : rng['end'],
                 'name' : nme
-            };
+            }).toString();
 
-            const par = new URLSearchParams(pyd).toString();
             const bse = `${exbaseurl}/${baseprefix}/well/records`;
             const url = `${bse}?${par}`;
-
-            const res = await get(url, pyd).then(data => data).catch(error => error);
+            const res = await get(url).then(data => data).catch(error => error);
             return res.response;
         }
 
+        async function getSidebarData() {
+            var dat;
+            const req = await fetchRecords(getDateRange(6000));
+            if (req.length !== 0) {
+                const rcd = req.well_record.at(-1);
+                dat = [
+                    parseInt(rcd.md) ?? 0,
+                    parseFloat(rcd.deptbitv) ?? 0,
+                    parseFloat(rcd.bitdepth) ?? 0,
+                    parseFloat(rcd.blockpos) ?? 0,
+                    parseFloat(rcd.rpm) ?? 0,
+                    parseFloat(rcd.woba) ?? 0,
+                    parseFloat(rcd.ropi) ?? 0,
+                    parseFloat(rcd.hklda) ?? 0,
+                    parseFloat(rcd.torqa) ?? 0,
+                    parseFloat(rcd.stppress) ?? 0,
+                    parseFloat(rcd.scfm) ?? 0,
+                    parseFloat(rcd.mudflowin) ?? 0,
+                    parseFloat(rcd.mudflowout) ?? 0
+                ]
+            } else {
+                dat = new Array(13).fill(0);
+            }
+
+            setSidebarDataStatus(dat);
+
+            document.getElementById('value-depth').innerHTML      = dat[0];
+            document.getElementById('value-bv-depth').innerHTML   = dat[1];
+            document.getElementById('value-bit-depth').innerHTML  = dat[2];
+            document.getElementById('value-block-pos.').innerHTML = dat[3];
+            document.getElementById('value-rpm').innerHTML        = dat[4];
+            document.getElementById('value-wob').innerHTML        = dat[5];
+            document.getElementById('value-ropi').innerHTML       = dat[6];
+            document.getElementById('value-hkld').innerHTML       = dat[7];
+            document.getElementById('value-torque').innerHTML     = dat[8];
+            document.getElementById('value-stpress').innerHTML    = dat[9];
+            document.getElementById('value-scfm').innerHTML       = dat[10];
+            document.getElementById('value-flow-in').innerHTML    = dat[11];
+            document.getElementById('value-flow-out').innerHTML   = dat[12];
+        }
+
         async function getRecords(mil = 0) {
-            const req = await fetchRecords(getDateRange(mil));
-            const rcd = req.well_record;
+            const rng = getDateRange(mil);
+            const req = await fetchRecords(rng);
 
             //-- chart data
             const tme = [];
@@ -35,91 +76,216 @@
             //-- others data
             const sfm = [], fli = [], flo = [];
 
-            rcd.forEach(elm => {
-                const md       = parseFloat(elm.md);
-                const bvdepth  = parseFloat(elm.deptbitv);
-                const bitdepth = parseFloat(elm.bitdepth);
+            if (req.length !== 0) {
+                const rcd = req.well_record;
+                rcd.forEach(elm => {
+                    const md       = parseFloat(elm.md);
+                    const bvdepth  = parseFloat(elm.deptbitv);
+                    const bitdepth = parseFloat(elm.bitdepth);
 
-                const woba   = parseFloat(elm.woba);
-                const ropi   = parseFloat(elm.ropi);
-                const torque = parseFloat(elm.torqa);
+                    const woba   = parseFloat(elm.woba);
+                    const ropi   = parseFloat(elm.ropi);
+                    const torque = parseFloat(elm.torqa);
+                    
+                    const rpma     = parseFloat(elm.rpm);
+                    const hklda    = parseFloat(elm.hklda);
+                    const blockpos = parseFloat(elm.blockpos);
+                    const stppress = parseFloat(elm.stppress);
+
+                    const scfm       = parseFloat(elm.scfm);
+                    const mudflowin  = parseFloat(elm.mudflowin);
+                    const mudflowout = parseFloat(elm.mudflowout);
+
+                    tme.push(elm.time)
+                    dph.push(md); btd.push(bitdepth); bvd.push(bvdepth);
+                    trq.push(torque); rpi.push(ropi); wob.push(woba);
+                    prs.push(stppress); rpm.push(rpma); hkl.push(hklda); bps.push(blockpos);
+                    
+                    fli.push(mudflowin); flo.push(mudflowout); sfm.push(scfm);
+                });
+
+                noData = false;
+            } else {
+                const current = new Date().toTimeString().slice(0, 8);
+
+                tme.push(current);
+                dph.push(0); btd.push(0); bvd.push(0);
+                trq.push(0); rpi.push(0); wob.push(0);
+                prs.push(0); rpm.push(0); hkl.push(0); bps.push(0);
                 
-                const rpma     = parseFloat(elm.rpm);
-                const hklda    = parseFloat(elm.hklda);
-                const blockpos = parseFloat(elm.blockpos);
-                const stppress = parseFloat(elm.stppress);
+                fli.push(0); flo.push(0); sfm.push(0);
 
-                const scfm       = parseFloat(elm.scfm);
-                const mudflowin  = parseFloat(elm.mudflowin);
-                const mudflowout = parseFloat(elm.mudflowout);
-
-                tme.push(elm.time)
-                dph.push(md); btd.push(bitdepth); bvd.push(bvdepth);
-                trq.push(torque); rpi.push(ropi); wob.push(woba);
-                prs.push(stppress); rpm.push(rpma); hkl.push(hklda); bps.push(blockpos);
-                
-                fli.push(mudflowin); flo.push(mudflowout); sfm.push(scfm);
-            });
+                noData = true;
+            }
 
             const cc1 = {
                 'labels': tme,
                 'datasets': [
-                    {label: 'depth', data: dph, borderColor: '#00A671'},
-                    {label: 'bit-depth', data: bvd, borderColor: '#0061A6'},
-                    {label: 'bv-depth', data: btd, borderColor: '#A6A100'}
+                    {label: 'depth', data: dph, borderColor: 'rgba(0, 166, 113, .75)'},
+                    {label: 'bit-depth', data: bvd, borderColor: 'rgba(0, 97, 166, .75)'},
+                    {label: 'bv-depth', data: btd, borderColor: 'rgba(166, 161, 0, .75)'}
                 ],
             };
 
             const cc2 = {
                 'labels': tme,
                 'datasets': [
-                    {label: 'torque', data: trq, borderColor: '#A60056'},
-                    {label: 'ropi', data: rpi, borderColor: '#0061A6'},
-                    {label: 'wob', data: wob, borderColor: '#6900A6'}
+                    {label: 'torque', data: trq, borderColor: 'rgba(166, 0, 86, .75)'},
+                    {label: 'ropi', data: rpi, borderColor: 'rgba(0, 97, 166, .75)'},
+                    {label: 'wob', data: wob, borderColor: 'rgba(105, 0, 166, .75)'}
                 ],
             };
 
             const cc3 = {
                 'labels': tme,
                 'datasets': [
-                    {label: 'stppress', data: prs, borderColor: '#A60088'},
-                    {label: 'rpm', data: rpm, borderColor: '#0061A6'},
-                    {label: 'hkld', data: hkl, borderColor: '#00A69E'},
-                    {label: 'block-pos', data: bps, borderColor: '#00A659'}
+                    {label: 'stppress', data: prs, borderColor: 'rgba(166, 0, 136, .75)'},
+                    {label: 'rpm', data: rpm, borderColor: 'rgba(0, 97, 166, .75)'},
+                    {label: 'hkld', data: hkl, borderColor: 'rgba(0, 166, 158, .75)'},
+                    {label: 'block-pos', data: bps, borderColor: 'rgba(0, 166, 89, .75)'}
                 ],
             };
 
            return [cc1, cc2, cc3];
         }
 
-        async function setChartData(cr1, cr2, cr3) {
-            const rcd = await getRecords(6000);
-            const [cc1, cc2, cc3] = rcd;
+        function setNewChartData(chart, newData) {
+            const lastLabel = chart.data.labels.at(-1);
+            const newLabel  = newData.labels.at(0);
 
-            cr1.data.labels = [...cr1.data.labels.slice(1), cc1.labels.at(-1)];
-            cr1.data.datasets.forEach((dataset, index) => {
-                dataset.data = [...dataset.data.slice(1), cc1.datasets[index].data.at(-1)];
-            });
+            if (lastLabel !== newLabel & !noData ) {
+                chart.data.labels.push(newData.labels.at(0));
+                chart.data.datasets.forEach((d, i) => d.data.push(newData.datasets[i].data.at(0)));
+            }
 
-            cr2.data.labels = [...cr2.data.labels.slice(1), cc2.labels.at(-1)];
-            cr2.data.datasets.forEach((dataset, index) => {
-                dataset.data = [...dataset.data.slice(1), cc2.datasets[index].data.at(-1)];
-            });
+            // else if (lastLabel !== newLabel & noData ) {
+            //     chart.data.labels.push(newData.labels.at(0));
+            //     chart.data.datasets.forEach((d, i) => d.data.push(0));
+            // }
 
-            cr3.data.labels = [...cr3.data.labels.slice(1), cc3.labels.at(-1)];
-            cr3.data.datasets.forEach((dataset, index) => {
-                dataset.data = [...dataset.data.slice(1), cc3.datasets[index].data.at(-1)];
-            });
+            if (chart.data.labels.length > 30) {
+                chart.data.labels.shift();
+                chart.data.datasets.forEach(d => d.data.shift());
+            }
 
-            const maxDataPoints = 60;
-            [cr1, cr2, cr3].forEach(chart => {
-                if (chart.data.labels.length > maxDataPoints) {
-                    chart.data.labels.shift();
-                    chart.data.datasets.forEach(dataset => dataset.data.shift());
-                }
-            });
+            chart.update('active');
+        }
 
-            cr1.update(); cr2.update(); cr3.update();
+        function setSidebarDataStatus(data, nor = '#0086A6', abn = '#A21C1E', inc = '#262626') {
+            if (data.length !== 13) {
+                return;
+            }
+
+            //-- check depth
+            if (data[0] === 0) {
+                document.getElementById('label-depth').style.backgroundColor = inc;
+            } else {
+                document.getElementById('label-depth').style.backgroundColor = nor;
+            }
+
+            //-- check bit depth
+            if (data[1] === 0) {
+                document.getElementById('label-bv-depth').style.backgroundColor = inc;
+            } else {
+                document.getElementById('label-bv-depth').style.backgroundColor = nor;
+            }
+
+            //-- check bv depth
+            if (data[2] === 0) {
+                document.getElementById('label-bit-depth').style.backgroundColor = inc;
+            } else {
+                document.getElementById('label-bit-depth').style.backgroundColor = nor;
+            }
+
+            //-- check blockpos
+            if (data[3] === 0) {
+                document.getElementById('label-block-pos.').style.backgroundColor = inc;
+            } else if (data[3] > 50) {
+                document.getElementById('label-block-pos.').style.backgroundColor = abn;
+            } else {
+                document.getElementById('label-block-pos.').style.backgroundColor = nor;
+            }
+
+            //-- check rpm
+            if (data[4] === 0) {
+                document.getElementById('label-rpm').style.backgroundColor = inc;
+            } else if (data[4] > 1000) {
+                document.getElementById('label-rpm').style.backgroundColor = abn;
+            } else {
+                document.getElementById('label-rpm').style.backgroundColor = nor;
+            }
+
+            //-- check wob
+            if (data[5] === 0) {
+                document.getElementById('label-wob').style.backgroundColor = inc;
+            } else if (data[5] > 100) {
+                document.getElementById('label-wob').style.backgroundColor = abn;
+            } else {
+                document.getElementById('label-wob').style.backgroundColor = nor;
+            }
+
+            //-- check ropi
+            if (data[6] === 0) {
+                document.getElementById('label-ropi').style.backgroundColor = inc;
+            } else if (data[6] > 1000) {
+                document.getElementById('label-ropi').style.backgroundColor = abn;
+            } else {
+                document.getElementById('label-ropi').style.backgroundColor = nor;
+            }
+
+            //-- check hkld
+            if (data[7] === 0) {
+                document.getElementById('label-hkld').style.backgroundColor = inc;
+            } else if (data[7] > 300) {
+                document.getElementById('label-hkld').style.backgroundColor = abn;
+            } else {
+                document.getElementById('label-hkld').style.backgroundColor = nor;
+            }
+
+            //-- check torque
+            if (data[8] === 0) {
+                document.getElementById('label-torque').style.backgroundColor = inc;
+            } else if (data[8] > 30) {
+                document.getElementById('label-torque').style.backgroundColor = abn;
+            } else {
+                document.getElementById('label-torque').style.backgroundColor = nor;
+            }
+
+            //-- check stpress
+            if (data[9] === 0) {
+                document.getElementById('label-stpress').style.backgroundColor = inc;
+            } else if (data[9] > 3000) {
+                document.getElementById('label-stpress').style.backgroundColor = abn;
+            } else {
+                document.getElementById('label-stpress').style.backgroundColor = nor;
+            }
+
+            //-- check scfm
+            if (data[10] === 0) {
+                document.getElementById('label-scfm').style.backgroundColor = inc;
+            } else if (data[10] > 5000) {
+                document.getElementById('label-scfm').style.backgroundColor = abn;
+            } else {
+                document.getElementById('label-scfm').style.backgroundColor = nor;
+            }
+
+            //-- check flowin
+            if (data[11] === 0) {
+                document.getElementById('label-flow-in').style.backgroundColor = inc;
+            } else if (data[11] > 3000) {
+                document.getElementById('label-flow-in').style.backgroundColor = abn;
+            } else {
+                document.getElementById('label-flow-in').style.backgroundColor = nor;
+            }
+
+            //-- check flowout
+            if (data[12] === 0) {
+                document.getElementById('label-flow-out').style.backgroundColor = inc;
+            } else if (data[12] > 3000) {
+                document.getElementById('label-flow-out').style.backgroundColor = abn;
+            } else {
+                document.getElementById('label-flow-out').style.backgroundColor = nor;
+            }
         }
 
         function getChartConfig(labels, datasets, index = 'y') {
@@ -131,8 +297,8 @@
                     maintainAspectRatio: false,
                     indexAxis: index,
                     scales: {
-                        y: { display: true, afterFit: function(axis) { axis.width = 100; } },
-                        x: { display: true }
+                        y: { display: true, beginAtZero: true, afterFit: function(axis) { axis.width = 100; } },
+                        x: { display: true, beginAtZero: true, }
                     },
                     plugins: { legend: { display: false } }
                 }
@@ -146,14 +312,22 @@
             const ct2 = document.getElementById('chart2').getContext('2d');
             const ct3 = document.getElementById('chart3').getContext('2d');
 
-            const rcd = await getRecords(5 * 60 * 1000);
+            const rcd = await getRecords(2.5 * 60 * 1000);
             const sdb = await getSidebarData();
 
             const cr1 = new Chart(ct1, getChartConfig(rcd[0].labels, rcd[0].datasets));
             const cr2 = new Chart(ct2, getChartConfig(rcd[1].labels, rcd[1].datasets));
             const cr3 = new Chart(ct3, getChartConfig(rcd[2].labels, rcd[2].datasets));
 
-            setInterval(async () => { await setChartData(cr1, cr2, cr3); }, 6000);
+            setInterval(async () => { 
+                const ndt = await getRecords(6000);
+
+                await setNewChartData(cr1, ndt[0]);
+                await setNewChartData(cr2, ndt[1]);
+                await setNewChartData(cr3, ndt[2]);
+
+                await getSidebarData(); 
+            }, 6000);
 
             document.querySelectorAll('.chart-filter-1').forEach(cf => {
                 cf.addEventListener('click', function() {

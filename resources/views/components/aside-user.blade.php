@@ -1,5 +1,5 @@
 <div class="sidebar-brand">
-    <a href="{{ route('rtm.index') }}" class="brand-link">
+    <a href="#" class="brand-link">
         <i id="user-icon" class="ti ti-users-group user-icon"></i>
         <div class="d-flex flex-column">
             <span id="user-name" class="brand-text user-header">Admin</span>

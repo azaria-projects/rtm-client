@@ -16,6 +16,7 @@ class CookiesMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $tkn = trim($_COOKIE['token'] ?? '', '"');
+
         if ($tkn != '') {
             return redirect()->route('rtm.select');
         }

@@ -2,7 +2,7 @@
     border: 1px solid var(--system-colors-black-secondary) !important;
     border-radius: 4px;
     min-height: 44px;
-    background-color: var(--system-component-card-background-color) !important;
+    background-color: #2B2B2B !important;
 
     .select2-selection__rendered {
         height: 100%;

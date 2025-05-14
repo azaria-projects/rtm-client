@@ -27,9 +27,9 @@
                 'ic' => 'ti-gas-station'
             ])
 
-            <li class="nav-item"> 
+            <li class="nav-item" style="overflow-x: scroll"> 
                 <div class="icon-filter-group">
-                    <div class="icon-filter">
+                    <div class="icon-filter" style="pointer-events: none !important;">
                         <span id="date-time" class="datetime me-2 text-center"></span>
                         <i class="ti ti-calendar-clock me-2"></i>
                     </div>
@@ -38,8 +38,12 @@
                         <i class="ti ti-power"></i>
                     </div>
     
-                    <div class="only-icon-filter active">
+                    <div class="only-icon-filter">
                         <i class="ti ti-layout-sidebar-right-expand" data-lte-toggle="sidebar" href="#" role="button"></i>
+                    </div>
+
+                    <div class="btn-home only-icon-filter active" style="cursor: pointer; text-decoration: none;">
+                        <i class="ti ti-home-spark"></i>
                     </div>
                 </div>
             </li>

@@ -36,9 +36,13 @@ const exPrefix  = import.meta.env.VITE_EXSERVER_PREFIX;
 
 async function get(url = '') {
     try {
-        const par = { method: 'GET', headers: { 'Content-Type': 'application/json' }}
-        const res = await fetch(url, par);
+        const uniqueUrl = `${url}${url.includes('?') ? '&' : '?'}_=${Date.now()}`;
+        const par = { method: 'GET', headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }}
+        const res = await fetch(uniqueUrl, par);
         const dat = await res.json();
+
+        console.log(dat);
+
         return {
             status   : res.ok,
             response : dat.response,
@@ -71,14 +75,50 @@ async function post(url = '', data = {}) {
     }
 }
 
+async function getRecord() {
+    try {
+        const url = `${exBaseurl}/${exPrefix}/well/records`;
+        const pyd = {}
+        const par = { method: 'GET', headers: { 'Content-Type': 'application/json' }}
+        const res = await fetch(url, par);
+        const dat = await res.json();
+
+        console.log(dat);
+
+        return {
+            status   : res.ok,
+            response : dat.response,
+            message  : dat.message
+        };
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 function getDateRange(milisecond = 6000, zone = 'Asia/Jakarta') {
-    const st = new Date();
-    const en = new Date(st.getTime() + milisecond);
+    const en = new Date();
+    const st = new Date(en.getTime() - milisecond);
+
+    const formatOptions = {
+        timeZone: zone,
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    };
 
     return {
-        'start' : formatInTimeZone(st, zone, 'yyyy-MM-dd HH:mm:ss'),
-        'end'   : formatInTimeZone(en, zone, 'yyyy-MM-dd HH:mm:ss')
-    }
+        'start': new Intl.DateTimeFormat('en-US', formatOptions)
+            .format(st)
+            .replace(/(\d+)\/(\d+)\/(\d+), (\d+:\d+:\d+)/, '$3-$1-$2 $4'),
+        'end': new Intl.DateTimeFormat('en-US', formatOptions)
+            .format(en)
+            .replace(/(\d+)\/(\d+)\/(\d+), (\d+:\d+:\d+)/, '$3-$1-$2 $4')
+    };
 }
 
 function resetCookies() {
@@ -228,8 +268,8 @@ window.get        = get;
 window.post       = post;
 window.getPayload = getPayload;
 
-window.getDateRange = getDateRange;
-window.resetCookies = resetCookies;
+window.getDateRange  = getDateRange;
+window.resetCookies  = resetCookies;
 window.getCurrentDateTime    = getCurrentDateTime;
 window.getCurrentDateTimeAlt = getCurrentDateTimeAlt;
 
