@@ -31,7 +31,6 @@ RUN php artisan config:clear
 RUN php artisan route:clear
 
 RUN php artisan key:generate
-RUN php artisan config:cache
 RUN php artisan migrate
 
 # Stage 2
