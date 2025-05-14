@@ -36,11 +36,11 @@ const exPrefix  = import.meta.env.VITE_EXSERVER_PREFIX;
 
 async function get(url = '') {
     try {
-        const uniqueUrl = `${url}${url.includes('?') ? '&' : '?'}_=${Date.now()}`;
         const par = { method: 'GET', headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }}
-        const res = await fetch(uniqueUrl, par);
+        const res = await fetch(url, par);
         const dat = await res.json();
 
+        console.log(url);
         console.log(dat);
 
         return {

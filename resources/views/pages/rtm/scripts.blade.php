@@ -22,9 +22,9 @@
             return res.response;
         }
 
-        async function getSidebarData() {
+        async function getSidebarData(mil = 0) {
             var dat;
-            const req = await fetchRecords(getDateRange(6000));
+            const req = await fetchRecords(getDateRange(mil));
             if (req.length !== 0) {
                 const rcd = req.well_record.at(-1);
                 dat = [
@@ -150,25 +150,33 @@
         }
 
         function setNewChartData(chart, newData) {
-            const lastLabel = chart.data.labels.at(-1);
-            const newLabel  = newData.labels.at(0);
+            chart.data.labels.push(newData.labels.at(-1));
+            chart.data.datasets.forEach((d, i) => d.data.push(newData.datasets[i].data.at(-1)));
 
-            if (lastLabel !== newLabel & !noData ) {
-                chart.data.labels.push(newData.labels.at(0));
-                chart.data.datasets.forEach((d, i) => d.data.push(newData.datasets[i].data.at(0)));
-            }
+            const uniqueLabels = [];
+            const uniqueData = chart.data.datasets.map(dataset => []);
 
-            // else if (lastLabel !== newLabel & noData ) {
-            //     chart.data.labels.push(newData.labels.at(0));
-            //     chart.data.datasets.forEach((d, i) => d.data.push(0));
-            // }
+            chart.data.labels.forEach((label, index) => {
+                if (!uniqueLabels.includes(label)) {
+                    uniqueLabels.push(label);
+                    chart.data.datasets.forEach((dataset, i) => {
+                        uniqueData[i].push(dataset.data[index]);
+                    });
+                }
+            });
+
+            chart.data.labels = uniqueLabels;
+            chart.data.datasets.forEach((dataset, i) => {
+                dataset.data = uniqueData[i];
+            });
 
             if (chart.data.labels.length > 30) {
-                chart.data.labels.shift();
-                chart.data.datasets.forEach(d => d.data.shift());
+                const excess = chart.data.labels.length - 30;
+                chart.data.labels.splice(0, excess);
+                chart.data.datasets.forEach(d => d.data.splice(0, excess));
             }
 
-            chart.update('active');
+            chart.update();
         }
 
         function setSidebarDataStatus(data, nor = '#0086A6', abn = '#A21C1E', inc = '#262626') {
@@ -313,20 +321,20 @@
             const ct3 = document.getElementById('chart3').getContext('2d');
 
             const rcd = await getRecords(2.5 * 60 * 1000);
-            const sdb = await getSidebarData();
+            const sdb = await getSidebarData(60000);
 
             const cr1 = new Chart(ct1, getChartConfig(rcd[0].labels, rcd[0].datasets));
             const cr2 = new Chart(ct2, getChartConfig(rcd[1].labels, rcd[1].datasets));
             const cr3 = new Chart(ct3, getChartConfig(rcd[2].labels, rcd[2].datasets));
 
             setInterval(async () => { 
-                const ndt = await getRecords(6000);
+                const ndt = await getRecords(60000);
 
                 await setNewChartData(cr1, ndt[0]);
                 await setNewChartData(cr2, ndt[1]);
                 await setNewChartData(cr3, ndt[2]);
 
-                await getSidebarData(); 
+                await getSidebarData(60000); 
             }, 6000);
 
             document.querySelectorAll('.chart-filter-1').forEach(cf => {
