@@ -28,7 +28,8 @@ RUN apk add --no-cache nodejs npm \
     && npm run build
 
 RUN php artisan config:clear
-RUN php artisan config:cache
+RUN php artisan route:clear
+RUN php artisan optimize:clear
 RUN php artisan migrate
 
 # Stage 2
