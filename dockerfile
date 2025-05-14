@@ -44,6 +44,8 @@ RUN apk add --no-cache \
     libzip
 
 COPY --from=build /app /app
+RUN rm -f /app/.env
+
 WORKDIR /app
 
 EXPOSE 8000

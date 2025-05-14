@@ -50,9 +50,17 @@ jobs:
         key: ${{ secrets.USER_PRIVATE_KEY }}
         port: ${{ secrets.SERVER_PORT }}
         script: |
+          ls -l /home/azariata.my.id/.env
+
           docker stop rtm-client || true
           docker rm rtm-client || true
           docker rmi rtm-client || true
           docker pull ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
-          docker run -d -p 8000:8000 -v /home/azariata.my.id/.env:/app/.env  --network network --name rtm-client ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
           docker image prune -f || true
+          
+          docker run -d \
+            -p 8000:8000 \
+            -v /home/azariata.my.id/.env:/app/.env \
+            --network network \
+            --name rtm-client \
+            ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
