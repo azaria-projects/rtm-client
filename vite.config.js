@@ -19,8 +19,8 @@ async function getConfig() {
         'public/themes/adminlte4/css/adminlte.min.css',
         'public/themes/adminlte4/js/adminlte.min.js',
 
-        'public/dependancies/select2/css/select2.min.css',
-        'public/dependancies/select2/js/select2.min.js',
+        'resources/dep/select2/css/select2.min.css',
+        'resources/dep/select2/js/select2.min.js',
 
         'public/icons/tabler/tabler-icons-filled.min.css',
         'public/icons/tabler/tabler-icons-outline.min.css',
@@ -33,14 +33,7 @@ async function getConfig() {
                 input: paths,
                 refresh: true,
             })
-        ],
-        build: {
-            rollupOptions: {
-              external: [
-                '/public/dependancies/select2/js/select2.min.js',
-              ]
-            }
-        }
+        ]
     });
 };
 

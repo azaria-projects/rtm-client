@@ -21,7 +21,6 @@ COPY . /app
 COPY .env.example /app/.env
 
 RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader --no-suggest
-RUN chmod -R 755 public/dependancies
 
 RUN apk add --no-cache nodejs npm \
     && rm -rf node_modules package-lock.json \
@@ -47,8 +46,6 @@ COPY --from=build /app /app
 # RUN rm -f /app/.env
 
 WORKDIR /app
-
-RUN chmod -R 755 public/dependancies
 
 EXPOSE 8000
 

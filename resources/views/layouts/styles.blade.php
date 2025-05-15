@@ -1,7 +1,7 @@
 @push('styles')
     @vite([
         'public/themes/adminlte4/css/adminlte.min.css',
-        'public/dependancies/select2/css/select2.min.css',
+        'resources/dep/select2/css/select2.min.css',
 
         'resources/css/app.css',
         'resources/css/sidebar.css',
