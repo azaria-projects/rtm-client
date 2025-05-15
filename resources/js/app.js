@@ -40,8 +40,8 @@ async function get(url = '') {
         const res = await fetch(url, par);
         const dat = await res.json();
 
-        console.log(url);
-        console.log(dat);
+        // console.log(url);
+        // console.log(dat);
 
         return {
             status   : res.ok,
@@ -64,27 +64,6 @@ async function post(url = '', data = {}) {
 
         const res = await fetch(url, par);
         const dat = await res.json();
-        return {
-            status   : res.ok,
-            response : dat.response,
-            message  : dat.message
-        };
-
-    } catch (err) {
-        console.log(err)
-    }
-}
-
-async function getRecord() {
-    try {
-        const url = `${exBaseurl}/${exPrefix}/well/records`;
-        const pyd = {}
-        const par = { method: 'GET', headers: { 'Content-Type': 'application/json' }}
-        const res = await fetch(url, par);
-        const dat = await res.json();
-
-        console.log(dat);
-
         return {
             status   : res.ok,
             response : dat.response,

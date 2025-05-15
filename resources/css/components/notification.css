@@ -1,0 +1,125 @@
+.card.predict-notification {
+    height: 100%;
+    max-height: 100%;
+    scroll-behavior: smooth !important;
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        overflow: auto;
+        scroll-behavior: smooth !important;
+
+        .notification {
+            background-color: #202020;
+            border: 2px solid #292929;
+            border-radius: 16px;
+            padding: 10px;
+            
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+            height: 100% !important;
+            max-height: 100% !important;
+            overflow-y: scroll !important;
+            scroll-behavior: smooth !important;
+        
+            .notif-container {
+                background-color: #292929;
+                border-radius: 10px;
+                padding: 16px 24px;
+                        
+                display: flex;
+                gap: 16px;
+                flex-direction: column;
+                height: fit-content;
+                scroll-behavior: smooth;
+                animation: fadeIn 1s ease-out forwards;
+        
+                .notif-header {
+                    display: flex;
+                    gap: 12px;
+                    align-items: center;
+        
+                    i.ti {
+                        font-size: 2.5rem;
+                    }
+        
+                    .notif-texts {
+                        display: flex;
+                        flex-direction: column;
+        
+                        .notif-status {
+                            padding: 0px;
+                            margin: 0px;
+        
+                            text-transform: uppercase;
+                            font-weight: 700;
+                            font-size: 24px;
+                        }
+        
+                        .notif-desc {
+                            font-weight: 500;
+                            font-size: 14px;
+
+                            .notif-pred {
+                                font-weight: 700;
+                                text-transform: uppercase;
+                            }
+                        }
+                    }   
+                }
+        
+                .notif-body {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 6px;
+        
+                    .notif-pills {
+                        display: flex;
+                        gap: 6px;
+                        align-items: center;
+        
+                        background-color: #171717;
+                        border: 2px solid #171717;
+                        border-radius: 50px;
+                        padding: 6px 12px;
+        
+                        i.ti {
+                            font-size: 20px;
+                        }
+        
+                        .notif-warning {
+                            text-transform: uppercase;
+                            font-size: 1rem;
+                            font-weight: 700;
+                        }
+                    }
+        
+                    .notif-pills.danger {
+                        background-color: #A31D1F;
+                        border: 2px solid #FF3F42;
+                    }
+                }
+            }
+        
+            .notif-container.danger {
+                background-color: #A31D1F !important;
+        
+                .notif-body {
+        
+                    .notif-pills.danger {
+                        background-color: #FFFFFF !important;
+                        border: 2px solid #FF8372 !important;
+        
+                        i.ti,
+                        .notif-warning {
+                            color: #A21C1E !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}

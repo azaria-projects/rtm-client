@@ -22,6 +22,19 @@
             return res.response;
         }
 
+        async function fetchPredictionLog() {
+            const nme = @json($nme);
+            const par = new URLSearchParams({
+                'count'     : 1,
+                'well_name' : nme
+            }).toString();
+
+            const bse = `${baseurl}/${baseprefix}/log`;
+            const url = `${bse}?${par}`;
+            const res = await get(url).then(data => data).catch(error => error);
+            return res.response;
+        }
+
         async function getSidebarData(mil = 0) {
             var dat;
             const req = await fetchRecords(getDateRange(mil));
@@ -61,6 +74,30 @@
             document.getElementById('value-scfm').innerHTML       = dat[10];
             document.getElementById('value-flow-in').innerHTML    = dat[11];
             document.getElementById('value-flow-out').innerHTML   = dat[12];
+        }
+
+        async function setPredictionNotification() {
+            const req = await fetchPredictionLog();
+            const dat = req[0];
+            const cmp = getNotificationComponent(
+                dat.well_pr === 1 ? true : false,
+                dat.stats_sr,
+                dat.stats_sl,
+                dat.stats_rt,
+                dat.stats_cl,
+                dat.stats_cr,
+                dat.date.split('+')[0].split('.')[0]
+            );
+
+            const trg = document.getElementById('prediction-notification');
+            if (trg.children.length >= 10) {
+                trg.firstElementChild.remove();
+            }
+
+            trg.insertAdjacentHTML('beforeend', cmp);
+
+            const chd = trg.lastElementChild;
+            trg.scrollTop = trg.scrollHeight;
         }
 
         async function getRecords(mil = 0) {
@@ -150,24 +187,26 @@
         }
 
         function setNewChartData(chart, newData) {
-            chart.data.labels.push(newData.labels.at(-1));
-            chart.data.datasets.forEach((d, i) => d.data.push(newData.datasets[i].data.at(-1)));
+            chart.data.labels.push(...newData.labels);
+            chart.data.datasets.forEach((dataset, i) => {
+                dataset.data.push(...newData.datasets[i].data);
+            });
 
-            const uniqueLabels = [];
-            const uniqueData = chart.data.datasets.map(dataset => []);
+            const uniqueLabels  = [];
+            const uniqueIndices = [];
+            const seenLabels    = new Set();
 
             chart.data.labels.forEach((label, index) => {
-                if (!uniqueLabels.includes(label)) {
+                if (!seenLabels.has(label)) {
+                    seenLabels.add(label);
                     uniqueLabels.push(label);
-                    chart.data.datasets.forEach((dataset, i) => {
-                        uniqueData[i].push(dataset.data[index]);
-                    });
+                    uniqueIndices.push(index);
                 }
             });
 
             chart.data.labels = uniqueLabels;
-            chart.data.datasets.forEach((dataset, i) => {
-                dataset.data = uniqueData[i];
+            chart.data.datasets.forEach(dataset => {
+                dataset.data = uniqueIndices.map(index => dataset.data[index]);
             });
 
             if (chart.data.labels.length > 30) {
@@ -313,6 +352,94 @@
             }
         }
 
+        function getNotificationComponent(
+            status = false, 
+            rpm = true,
+            stall = false,
+            torque = false,
+            cleanbit = true,
+            circulation = true,
+            date = '' 
+        ) {
+
+            //-- status       => is it potential stuck?        TRUE if yes, FALSE if no
+            //-- rpm          => is rpm normal?                TRUE if yes, FALSE if no
+            //-- stall        => is there any stall?           TRUE if yes, FALSE if no 
+            //-- torque       => is there any abnormal torque? TRUE if yes, FALSE if no
+            //-- circulation  => is there any circulation?     TRUE if yes, FALSE if no
+            //-- cleanbit     => is bit string clean?          TRUE if yes, FALSE if no
+
+            //-- well prediction
+            var wcs = status ? 'danger' : '';
+            var wst = status ? 'warning' : 'normal';
+            var wic = status ? 'ti-bell-exclamation' : 'ti-checks';
+            var wdc = status 
+                        ? 'potential stuck!' 
+                        : 'normal condition!';
+            
+            //-- rpm status
+            var rcs = !rpm ? 'danger' : '';
+            var ric = rpm ? 'ti-wave-square' : 'ti-x';
+            var rdc = rpm ? 'normal rpm' : 'no rpm!';
+
+            //-- stall status
+            var scs = stall ? 'danger' : '';
+            var sic = !stall ? 'ti-irregular-polyhedron' : 'ti-irregular-polyhedron-off';
+            var sdc = !stall ? 'no stall formation' : 'stall formation!';
+
+            //-- torque status
+            var tcs = torque ? 'danger' : '';
+            var tic = !torque ? 'ti-wave-square' : 'ti-trending-up';
+            var tdc = !torque ? 'normal torque' : 'rising torque!';
+
+            //-- cleanbit status
+            var ccs = !cleanbit ? 'danger' : '';
+            var cic = cleanbit ? 'ti-wall' : 'ti-wall-off';
+            var cdc = cleanbit ? 'clean bit string' : 'cutting on bit string!';
+
+            //-- circulation status
+            var ncs = !circulation ? 'danger' : '';
+            var nic = circulation ? 'ti-droplet-half-filled' : 'ti-droplet-off';
+            var ndc = circulation ? 'circulation exist' : 'no circulation!';
+
+            return `
+                <div class="notif-container ${wcs}">
+                    <div class="notif-header">
+                        <i class="ti ${wic}"></i>
+                        <div class="notif-texts">
+                            <span class="notif-status">${wst}</span>
+                            <small class="notif-desc">
+                                <span class="notif-date">${date}</span> | <span class="notif-pred">${wdc}</span>
+                            </small>
+                        </div>
+                    </div>
+                
+                    <div class="notif-body">
+                        <div class="notif-pills ${rcs}">
+                            <i class="ti ${ric}"></i>
+                            <span class="notif-warning">${rdc}</span>
+                        </div>
+                        <div class="notif-pills ${scs}">
+                            <i class="ti ${sic}"></i>
+                            <span class="notif-warning">${sdc}</span>
+                        </div>
+                        <div class="notif-pills ${tcs}">
+                            <i class="ti ${tic}"></i>
+                            <span class="notif-warning">${tdc}</span>
+                        </div>
+                        <div class="notif-pills ${ccs}">
+                            <i class="ti ${cic}"></i>
+                            <span class="notif-warning">${cdc}</span>
+                        </div>
+                        <div class="notif-pills ${ncs}">
+                            <i class="ti ${nic}"></i>
+                            <span class="notif-warning">${ndc}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
         document.addEventListener('DOMContentLoaded', async function() {
             init();
 
@@ -322,6 +449,7 @@
 
             const rcd = await getRecords(2.5 * 60 * 1000);
             const sdb = await getSidebarData(60000);
+            const plg = await setPredictionNotification();
 
             const cr1 = new Chart(ct1, getChartConfig(rcd[0].labels, rcd[0].datasets));
             const cr2 = new Chart(ct2, getChartConfig(rcd[1].labels, rcd[1].datasets));
@@ -334,8 +462,10 @@
                 await setNewChartData(cr2, ndt[1]);
                 await setNewChartData(cr3, ndt[2]);
 
-                await getSidebarData(60000); 
+                await getSidebarData(60000);
             }, 6000);
+
+            setInterval(async () => { await setPredictionNotification(); }, 1.5 * 60 * 1000);;
 
             document.querySelectorAll('.chart-filter-1').forEach(cf => {
                 cf.addEventListener('click', function() {
@@ -400,6 +530,8 @@
                     }
                 });
             });
+
+            document.getElementById("loading-cover").remove();
         });
     </script>
 @endpush

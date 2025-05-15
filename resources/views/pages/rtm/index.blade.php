@@ -4,6 +4,8 @@
 
 @section('content')
 
+@include('components.loading')
+
 <div class="app-content-header">
     <div class="container-fluid container-column gap-4">
         <div class="row">
@@ -65,16 +67,16 @@
 
             {{-- prediction notification --}}
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-5" style="height: 800px;">
-                <div class="card">
+                <div class="card predict-notification">
                     <div class="card-header">
                         <i class="ti ti-tic-tac me-1 d-none d-sm-block"></i>
                         <div class="container-column">
-                            <p class="card-subtitle">every minute well prediction on future stuck event</p>
+                            <p class="card-subtitle">potential stuck <b>prediction for 5 minute</b> in the future</p>
                             <p class="card-title">POTENTIAL STUCK PREDICTION</p>
                         </div>
                     </div>
                     <div class="card-body">
-
+                        <div id="prediction-notification" class="notification"> </div>
                     </div>
                 </div>
             </div>

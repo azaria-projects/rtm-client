@@ -14,6 +14,7 @@ async function getConfig() {
         'resources/css/components/toast.css',
         'resources/css/components/select.css',
         'resources/css/components/buttons.css',
+        'resources/css/components/notification.css',
 
         'public/themes/adminlte4/css/adminlte.min.css',
         'public/themes/adminlte4/js/adminlte.min.js',
