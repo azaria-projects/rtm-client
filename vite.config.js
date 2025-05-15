@@ -33,7 +33,14 @@ async function getConfig() {
                 input: paths,
                 refresh: true,
             })
-        ]
+        ],
+        build: {
+            rollupOptions: {
+              external: [
+                '/public/dependancies/select2/js/select2.min.js',
+              ]
+            }
+        }
     });
 };
 
