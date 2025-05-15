@@ -34,6 +34,7 @@
         "jszip": "^3.10.1",
         "overlayscrollbars": "^2.10.1",
         "pdfmake": "^0.2.5",
+        "select2": "^4.1.0-rc.0",
         "sortablejs": "^1.15.6",
         "sweetalert2": "^11.6.13",
         "tippy.js": "^6.3.7",
