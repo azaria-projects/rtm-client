@@ -77,17 +77,25 @@
         }
 
         async function setPredictionNotification() {
+            var dat;
+            var cmp;
+
             const req = await fetchPredictionLog();
-            const dat = req[0];
-            const cmp = getNotificationComponent(
-                dat.well_pr === 1 ? true : false,
-                dat.stats_sr,
-                dat.stats_sl,
-                dat.stats_rt,
-                dat.stats_cl,
-                dat.stats_cr,
-                dat.date.split('+')[0].split('.')[0]
-            );
+
+            if (req.length > 0) {
+                dat = req[0];
+                cmp = getNotificationComponent(
+                    dat.well_pr === 1 ? true : false,
+                    dat.stats_sr,
+                    dat.stats_sl,
+                    dat.stats_rt,
+                    dat.stats_cl,
+                    dat.stats_cr,
+                    dat.date.split('+')[0].split('.')[0]
+                );
+            } else {
+                cmp = getNotificationComponent(false, true, false, false, true, true, 'no data');
+            }
 
             const trg = document.getElementById('prediction-notification');
             if (trg.children.length >= 10) {
@@ -98,6 +106,7 @@
 
             const chd = trg.lastElementChild;
             trg.scrollTop = trg.scrollHeight;
+
         }
 
         async function getRecords(mil = 0) {
