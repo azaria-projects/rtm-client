@@ -15,10 +15,6 @@ async function getConfig() {
         'resources/css/components/select.css',
         'resources/css/components/buttons.css',
         'resources/css/components/notification.css',
-
-        'public/icons/tabler/tabler-icons-filled.min.css',
-        'public/icons/tabler/tabler-icons-outline.min.css',
-        'public/icons/tabler/tabler-icons.min.css',
     ];
 
     return defineConfig({
