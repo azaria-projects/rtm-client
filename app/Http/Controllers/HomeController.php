@@ -15,7 +15,7 @@ class HomeController extends Controller
             return redirect()->route('rtm.select')->with('error', 'no well were selected!');
         }
 
-        $sat = $wll['active'];
+        $sat = $wll['well_active'];
         $zon = $wll['time_zone'];
         $nme = $wll['well_name'];
         $tkn = $wll['is_api_token'];
