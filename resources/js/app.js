@@ -9,7 +9,7 @@ import '@fontsource/inria-sans/300.css';
 import '@fontsource/inria-sans/400.css';
 import '@fontsource/inria-sans/700.css';
 
-import $ from 'jquery';
+// import $ from 'jquery';
 import toastr from 'toastr';
 import tippy from 'tippy.js';
 import Swal from 'sweetalert2';
@@ -236,7 +236,7 @@ window.JSZip = JSZip;
 window.tippy = tippy;
 window.toastr = toastr;
 window.datatable = DataTable
-window.$ = window.jQuery = $;
+// window.$ = window.jQuery = $;
 
 window.baseurl    = baseurl;
 window.exbaseurl  = exBaseurl;

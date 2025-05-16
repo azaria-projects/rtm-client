@@ -1,9 +1,8 @@
 @push('scripts-body')
-    @vite([
-        'resources/js/app.js',
-        'public/themes/adminlte4/js/adminlte.min.js',
-        'public/dependancies/select2/js/select2.min.js',
-    ])
+    <script src="{{ asset('dependancies/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('dependancies/select2/js/select2.min.js') }}"></script>
+
+    @vite([ 'resources/js/app.js' ])
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

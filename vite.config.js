@@ -16,12 +16,6 @@ async function getConfig() {
         'resources/css/components/buttons.css',
         'resources/css/components/notification.css',
 
-        'public/themes/adminlte4/css/adminlte.min.css',
-        'public/themes/adminlte4/js/adminlte.min.js',
-
-        'public/dependancies/select2/css/select2.min.css',
-        'public/dependancies/select2/js/select2.min.js',
-
         'public/icons/tabler/tabler-icons-filled.min.css',
         'public/icons/tabler/tabler-icons-outline.min.css',
         'public/icons/tabler/tabler-icons.min.css',
