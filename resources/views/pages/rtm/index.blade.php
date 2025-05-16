@@ -173,4 +173,6 @@
     </div>
 </div>
 
+<div id="reset-click" class="d-none"></div>
+
 @endsection

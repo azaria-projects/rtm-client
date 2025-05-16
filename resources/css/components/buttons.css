@@ -140,7 +140,7 @@
         background-color: #00A69E;
     }
 
-    [data-chart="depth"]:hover,
+    /* [data-chart="depth"]:hover,
     [data-chart="bv-depth"]:hover,
     [data-chart="bit-depth"]:hover,
     [data-chart="block-pos"]:hover,
@@ -153,11 +153,30 @@
         background-color: #252525 !important;
         border-color: #252525 !important;
         color: white !important;
-    }
+    } */
 
     .disabled {
         background-color: #252525 !important;
         border-color: #252525 !important;
         color: #696969 !important;
+    }
+}
+
+@media (hover: hover) {
+    .icon-filter-group {
+        [data-chart="depth"]:hover,
+        [data-chart="bv-depth"]:hover,
+        [data-chart="bit-depth"]:hover,
+        [data-chart="block-pos"]:hover,
+        [data-chart="stppress"]:hover,
+        [data-chart="torque"]:hover,
+        [data-chart="wob"]:hover,
+        [data-chart="ropi"]:hover,
+        [data-chart="rpm"]:hover,
+        [data-chart="hkld"]:hover {
+            background-color: #252525 !important;
+            border-color: #252525 !important;
+            color: white !important;
+        }
     }
 }

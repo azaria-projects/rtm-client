@@ -515,6 +515,8 @@
                         
                         cr3.update();
                     }
+
+                    document.getElementById('reset-click').click()
                 });
             });
 

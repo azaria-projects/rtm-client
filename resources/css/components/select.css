@@ -36,7 +36,7 @@
     }
 }
 
-.select2-dropdown.select2-dropdown--below {
+.select2-dropdown {
     border: 1px solid var(--system-colors-black-secondary);
     border-bottom-left-radius: calc(var(--system-size-base) - 4px);
     border-bottom-right-radius: calc(var(--system-size-base) - 4px);
