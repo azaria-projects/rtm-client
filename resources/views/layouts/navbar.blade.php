@@ -38,8 +38,8 @@
                         <i class="ti ti-power"></i>
                     </div>
     
-                    <div class="only-icon-filter">
-                        <i class="ti ti-layout-sidebar-right-expand" data-lte-toggle="sidebar" href="#" role="button"></i>
+                    <div class="only-icon-filter" data-lte-toggle="sidebar" role="button">
+                        <i class="ti ti-layout-sidebar-right-expand"></i>
                     </div>
 
                     <div class="btn-home only-icon-filter active" style="cursor: pointer; text-decoration: none;">
