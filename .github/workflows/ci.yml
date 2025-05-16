@@ -60,7 +60,6 @@ jobs:
           
           docker run -d \
             -p 8000:8000 \
-            -v /home/azariata.my.id/.env:/app/.env \
             --network network \
             --name rtm-client \
             ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
