@@ -340,6 +340,9 @@
                 type: 'line',
                 data: { labels: labels, datasets: datasets },
                 options: {
+                    layout: {
+                        padding: { left: -7, bottom: -7, top: -7, right: -7 }
+                    },
                     responsive: true,
                     maintainAspectRatio: false,
                     indexAxis: index,

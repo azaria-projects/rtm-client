@@ -123,3 +123,60 @@
     }
 
 }
+
+@media (max-width: 576px) {
+    .card.predict-notification {
+        .card-body {
+            .notification {            
+                .notif-container {
+            
+                    .notif-header {
+                        align-items: start;
+                        flex-direction: column !important;
+            
+                        /* i.ti {
+                            font-size: 2.5rem;
+                        }
+            
+                        .notif-texts {
+                            display: flex;
+                            flex-direction: column;
+            
+                            .notif-status {
+                                padding: 0px;
+                                margin: 0px;
+            
+                                text-transform: uppercase;
+                                font-weight: 700;
+                                font-size: 24px;
+                            }
+            
+                            .notif-desc {
+                                font-weight: 500;
+                                font-size: 14px;
+    
+                                .notif-pred {
+                                    font-weight: 700;
+                                    text-transform: uppercase;
+                                }
+                            }
+                        }    */
+                    }
+            
+                    .notif-body {
+                        flex-direction: column !important;
+            
+                        .notif-pills {
+                            align-items: start;
+                            flex-direction: column !important;
+                            width: 100%;
+                            border-radius: 8px;
+                            padding: 6px 12px;
+                        }
+                    }
+                }
+            }
+        }
+    
+    }
+}
