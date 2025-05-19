@@ -300,4 +300,3 @@ document.addEventListener("DOMContentLoaded", function () {
         cardHeader.style.cursor = "move";
     });
 });
-

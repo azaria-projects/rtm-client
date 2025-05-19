@@ -64,7 +64,10 @@
     </div>
 
     <div class="col-12">
-        <p id="title-prediction" class="page-header mb-0">PREDICTION DATA</p>
+        <div class="d-flex align-items-center">
+            <p id="title-prediction" class="page-header mb-0 me-2">PREDICTION DATA</p>
+            <div><span id="view-data-spinner" class="spinner-border spinner-border-sm d-none" role="status"></span></div>
+        </div>
         <p id="subtitle-prediction" class="page-subheader mb-0">No Data! Please select prediction date!</p>
     </div>
 
