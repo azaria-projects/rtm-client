@@ -187,31 +187,29 @@
                 });
             });
 
-            document.querySelectorAll('.btn-view-data').forEach(button => {
-                button.addEventListener('click', async function() {
-                    const sp = document.getElementById('view-data-spinner');
-                    const tx = document.getElementById('subtitle-prediction');
+            $(document).on('click', '.btn-view-data', async function() {
+                const sp = document.getElementById('view-data-spinner');
+                const tx = document.getElementById('subtitle-prediction');
 
-                    if (sp.classList.contains('d-none')) {
-                        sp.classList.remove('d-none');
-                    }
+                if (sp.classList.contains('d-none')) {
+                    sp.classList.remove('d-none');
+                }
 
-                    const pr = $(this).data('prediction-dt').split('.')[0];
-                    const st = $(this).data('record-start');
-                    const en = $(this).data('record-end');
+                const pr = $(this).data('prediction-dt').split('.')[0];
+                const st = $(this).data('record-start');
+                const en = $(this).data('record-end');
 
-                    const ndt = await getSpecificRecords(st, en);
+                const ndt = await getSpecificRecords(st, en);
 
-                    await setNewPredictionChartData(cr4, ndt[0]);
-                    await setNewPredictionChartData(cr5, ndt[1]);
-                    await setNewPredictionChartData(cr6, ndt[2]);
+                await setNewPredictionChartData(cr4, ndt[0]);
+                await setNewPredictionChartData(cr5, ndt[1]);
+                await setNewPredictionChartData(cr6, ndt[2]);
 
-                    tx.innerText = `Data used to perform prediction at ${pr}`; 
+                tx.innerText = `Data used to perform prediction at ${pr}`; 
 
-                    if (!sp.classList.contains('d-none')) {
-                        sp.classList.add('d-none');
-                    }
-                });
+                if (!sp.classList.contains('d-none')) {
+                    sp.classList.add('d-none');
+                }
             });
 
             setInterval(async () => { 

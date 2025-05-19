@@ -146,6 +146,8 @@ function getToday(zone = 'Asia/Jakarta') {
         second: '2-digit'
     };
 
+    td.setHours(td.getHours() + 1); 
+
     return new Intl.DateTimeFormat('en-US', formatOptions)
     .format(td)
     .replace(/(\d+)\/(\d+)\/(\d+), (\d+:\d+:\d+)/, '$3-$1-$2 $4');
