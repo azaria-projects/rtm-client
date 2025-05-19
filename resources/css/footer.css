@@ -2,3 +2,10 @@ footer.app-footer {
     background-color: var(--system-component-sidebar-background-color);
     border-top: none;
 }
+
+@media (max-width: 576px) {
+    footer.app-footer {
+        display: flex;
+        flex-direction: column;
+    }
+}

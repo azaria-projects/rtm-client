@@ -40,10 +40,73 @@
         }
     }
 
+    .card-header.has-icons {
+        display: flex;
+        flex-direction: row;
+
+        .text-header {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .icon-export {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            gap: 8px;
+            align-items: start;
+
+            .icons {
+                display: flex;
+                padding: 6px;
+                border-radius: 8px;
+                background-color: #1F1F1F !important;
+                border: 2px solid #2D2D2D !important;
+
+                i {
+                    font-size: 1.75rem;
+                }
+            }
+        }
+    }
+
     .card-body {
         display: flex;
         flex-direction: column;
         gap: 24px;
         padding: 0px;
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        .card-header.has-icons {
+            display: flex;
+            flex-direction: column;
+
+            .icon-export {
+                margin-left: 20px;
+                width: 100%;
+                height: fit-content;
+                display: flex;
+                gap: 8px;
+                align-items: start;
+
+                .icons {
+                    display: flex;
+                    padding: 6px;
+                    border-radius: 8px;
+                    background-color: #252525 !important;
+                    border: 2px solid #2D2D2D !important;
+
+                    i {
+                        font-size: 1.75rem;
+                    }
+                }
+            }
+        }
     }
 }

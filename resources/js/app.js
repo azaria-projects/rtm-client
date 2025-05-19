@@ -9,7 +9,6 @@ import '@fontsource/inria-sans/300.css';
 import '@fontsource/inria-sans/400.css';
 import '@fontsource/inria-sans/700.css';
 
-// import $ from 'jquery';
 import toastr from 'toastr';
 import tippy from 'tippy.js';
 import Swal from 'sweetalert2';
@@ -19,13 +18,8 @@ import 'datatables.net-bs5';
 import 'datatables.net-buttons-bs5';
 import 'datatables.net-buttons/js/buttons.html5.min';
 import 'datatables.net-buttons/js/buttons.print.min';
-import JSZip from 'jszip';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-import DataTable from 'datatables.net-dt';
 
-import { addMinutes } from 'date-fns';
-import { formatInTimeZone } from 'date-fns-tz';
+import { format } from 'date-fns';
 import { Chart, registerables } from 'chart.js';
 import { OverlayScrollbars } from 'overlayscrollbars';
 
@@ -139,6 +133,24 @@ function getCurrentDateTimeAlt() {
     setTimeout(getCurrentDateTimeAlt, 1000);
 }
 
+function getToday(zone = 'Asia/Jakarta') {
+    const td = new Date();
+    const formatOptions = {
+        timeZone: zone,
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    };
+
+    return new Intl.DateTimeFormat('en-US', formatOptions)
+    .format(td)
+    .replace(/(\d+)\/(\d+)\/(\d+), (\d+:\d+:\d+)/, '$3-$1-$2 $4');
+}
+
 function getPayload(forms = []) {
     const dat = {};
 
@@ -232,11 +244,8 @@ Chart.register(...registerables);
 
 window.Chart = Chart;
 window.swal  = Swal;
-window.JSZip = JSZip;
 window.tippy = tippy;
 window.toastr = toastr;
-window.datatable = DataTable
-// window.$ = window.jQuery = $;
 
 window.baseurl    = baseurl;
 window.exbaseurl  = exBaseurl;
@@ -247,6 +256,7 @@ window.get        = get;
 window.post       = post;
 window.getPayload = getPayload;
 
+window.getToday      = getToday;
 window.getDateRange  = getDateRange;
 window.resetCookies  = resetCookies;
 window.getCurrentDateTime    = getCurrentDateTime;

@@ -119,15 +119,15 @@ body {
 }
 
 .page-subheader {
-    font-size: 20px;
-    font-weight: 400;
+    font-size: 1rem;
+    font-weight: 300;
     color: var(--system-colors-white-primary);
 }
 
 .row {
     margin: 0px 0px;
 
-    button {
+    button:not(.page-link) {
         width: 100%;
         min-height: 48px;
         border-radius: calc(var(--system-border-base) - 4px) !important;
@@ -145,7 +145,7 @@ body {
     width: 100%;
     height: 50%;
     z-index: -1;
-    opacity: 0.25;
+    opacity: 0.075;
 }
 
 .login-box, .register-box {

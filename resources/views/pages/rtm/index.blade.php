@@ -8,168 +8,29 @@
 
 <div class="app-content-header">
     <div class="container-fluid container-column gap-4">
-        <div class="row">
-            <div class="col">
-                <p class="page-header mb-0">Realtime Dashboard</p>
-                <p class="page-subheader mb-0">Monitor Realtime Well Data</p>
-            </div>
-            <div class="col-12 col-sm-auto">
-                <ol class="breadcrumb float-sm-end">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">
-                        Dashboard
-                    </li>
-                </ol>
-            </div>
-        </div>
-
-        <div class="row row-gap-4">
-            {{-- chart 1 --}}
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-7" style="height: 800px;">
-                <div class="card h-100">
-                    <div class="card-header">
-                        <i class="ti ti-keyframes me-1 d-none d-sm-block"></i>
-                        <div class="container-column">
-                            <p class="card-subtitle">Drilling sensor displayed in vertical line charts</p>
-                            <p class="card-title">DEPTH LINE CHART</p>
-                        </div>
-                    </div>
-
-                    <div class="card-body h-100">
-                        <div class="d-flex gap-4 justify-content-between">
-                            <div class="icon-filter-group">
-                                @include('components.btn-filter', [
-                                    'ic' => 'ti-arrow-down-dashed',
-                                    'nb' => 'chart-filter-1',
-                                    'tt' => 'Depth'
-                                ])
-
-                                @include('components.btn-filter', [
-                                    'ic' => 'ti-arrows-transfer-up-down',
-                                    'nb' => 'chart-filter-1',
-                                    'tt' => 'BV-Depth'
-                                ])
-
-                                @include('components.btn-filter', [
-                                    'ic' => 'ti-needle-thread',
-                                    'nb' => 'chart-filter-1',
-                                    'tt' => 'Bit-Depth'
-                                ])
-                            </div>
-                        </div>
-
-                        <div class="chart-container">
-                            <canvas id="chart1"></canvas>
-                        </div>
-                    </div>
+        <div class="d-flex flex-column">
+            <div class="icon-singular-group mb-4" style="width: fit-content !important;" role="tablist">
+                <div class="icon-filter pills active" id="tab-monitoring" data-bs-toggle="tab" data-bs-target="#data-monitoring" type="button" role="tab" aria-controls="data-monitoring" aria-selected="true">
+                    <i class="ti ti-heart-rate-monitor" style="font-size: 1.3rem"></i>
+                    <span id="monitoring" class="me-2">Monitoring</span>
+                </div>
+        
+                <div class="icon-filter pills" id="tab-histories" data-bs-toggle="tab" data-bs-target="#data-histories" type="button" role="tab" aria-controls="data-histories" aria-selected="false">
+                    <i class="ti ti-contract" style="font-size: 1.3rem"></i>
+                    <span id="histories" class="me-2">Histories</span>
                 </div>
             </div>
-
-            {{-- prediction notification --}}
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-5" style="height: 800px;">
-                <div class="card predict-notification">
-                    <div class="card-header">
-                        <i class="ti ti-tic-tac me-1 d-none d-sm-block"></i>
-                        <div class="container-column">
-                            <p class="card-subtitle">potential stuck <b>prediction for 5 minute</b> in the future</p>
-                            <p class="card-title">POTENTIAL STUCK PREDICTION</p>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="prediction-notification" class="notification"> </div>
-                    </div>
+        
+            <div class="tab-content" id="tab-content"> 
+                <div class="tab-pane fade show active" id="data-monitoring" role="tabpanel" aria-labelledby="tab-monitoring">
+                    @include('pages.rtm.monitoring')
                 </div>
-            </div>
-
-            {{-- chart 2 --}}
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6" style="height: 800px;">
-                <div class="card">
-                    <div class="card-header">
-                        <i class="ti ti-crane me-1 d-none d-sm-block"></i>
-                        <div class="container-column">
-                            <p class="card-subtitle">Drilling sensor displayed in vertical line charts</p>
-                            <p class="card-title">DRILLING LINE CHART</p>
-                        </div>
-                    </div>
-
-                    <div class="card-body h-100">
-                        <div class="d-flex gap-4 justify-content-between">
-                            <div class="icon-filter-group">
-                                @include('components.btn-filter', [
-                                    'ic' => 'ti-whirl',
-                                    'nb' => 'chart-filter-2',
-                                    'tt' => 'Torque'
-                                ])
-
-                                @include('components.btn-filter', [
-                                    'ic' => 'ti-stack-push',
-                                    'nb' => 'chart-filter-2',
-                                    'tt' => 'ROPi'
-                                ])
-
-                                @include('components.btn-filter', [
-                                    'ic' => 'ti-arrow-big-down-lines',
-                                    'nb' => 'chart-filter-2',
-                                    'tt' => 'WOB'
-                                ])
-                            </div>
-                        </div>
-
-                        <div class="chart-container">
-                            <canvas id="chart2"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- chart 3 --}}
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6" style="height: 800px;">
-                <div class="card">
-                    <div class="card-header">
-                        <i class="ti ti-tournament me-1 d-none d-sm-block"></i>
-                        <div class="container-column">
-                            <p class="card-subtitle">Drilling sensor displayed in vertical line charts</p>
-                            <p class="card-title">BIT STRING CHART DATA</p>
-                        </div>
-                    </div>
-
-                    <div class="card-body h-100">
-                        <div class="d-flex gap-4 justify-content-between">
-                            <div class="icon-filter-group">
-                                @include('components.btn-filter', [
-                                    'ic' => 'ti-propeller',
-                                    'nb' => 'chart-filter-3',
-                                    'tt' => 'STPPRESS'
-                                ])
-
-                                @include('components.btn-filter', [
-                                    'ic' => 'ti-fish-hook',
-                                    'nb' => 'chart-filter-3',
-                                    'tt' => 'HKLD'
-                                ])
-
-                                @include('components.btn-filter', [
-                                    'ic' => 'ti-texture',
-                                    'nb' => 'chart-filter-3',
-                                    'tt' => 'RPM'
-                                ])
-
-
-                                @include('components.btn-filter', [
-                                    'ic' => 'ti-blocks',
-                                    'nb' => 'chart-filter-3',
-                                    'tt' => 'Block-Pos'
-                                ])
-                            </div>
-                        </div>
-
-                        <div class="chart-container">
-                            <canvas id="chart3"></canvas>
-                        </div>
-                    </div>
+                <div class="tab-pane fade" id="data-histories" role="tabpanel" aria-labelledby="tab-histories">
+                    @include('pages.rtm.history')
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 

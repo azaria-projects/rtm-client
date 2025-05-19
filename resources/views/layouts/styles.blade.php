@@ -1,6 +1,8 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('themes/adminlte4/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dependancies/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dependancies/datatable/css/datatables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dependancies/daterangepicker/css/daterangepicker.css') }}">
 
     @vite([
         'resources/css/app.css',

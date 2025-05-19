@@ -1,9 +1,219 @@
 @push('scripts-body')
     <script>
         var noData = false;
+        var crr;
+        var dst; //-- for filter 
+        var den; //-- for filter 
 
-        async function init() {
+        async function initJqueryCodes() {
+            const tbp = getPredictionTable();
+
+            $('.page-link[data-dt-idx="0"]').trigger('click');
+
+            tbp.on('processing.dt', function(e, settings, processing) {
+                if (processing) {
+                    $('.dt-processing').addClass('dt-load');
+                } else {
+                    $('.dt-processing').removeClass('dt-load');
+                }
+            });
+
+            $('#filter-date').daterangepicker({
+                timePicker: true,
+                timePicker24Hour: true,
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                },
+                autoApply: false
+            }, function(start, end, label) {
+                dst = start.format('YYYY-MM-DD HH:mm:ss');
+                den = end.format('YYYY-MM-DD HH:mm:ss');
+                
+                $('.btn-refresh').click();
+            });
+
+            $(document).on('click', '.btn-refresh', function() {
+                tbp.ajax.reload(null, false);
+            });
+        }
+
+        async function initVanilaCodes() {
             getCurrentDateTimeAlt();
+
+            const ct1 = document.getElementById('chart1').getContext('2d');
+            const ct2 = document.getElementById('chart2').getContext('2d');
+            const ct3 = document.getElementById('chart3').getContext('2d');
+
+            const ct4 = document.getElementById('chart4').getContext('2d');
+            const ct5 = document.getElementById('chart5').getContext('2d');
+            const ct6 = document.getElementById('chart6').getContext('2d');
+
+            const rcd = await getRecords(2.5 * 60 * 1000);
+            const sdb = await getSidebarData(60000);
+            const plg = await setPredictionNotification();
+
+            const cr1 = new Chart(ct1, getChartConfig(rcd[0].labels, rcd[0].datasets));
+            const cr2 = new Chart(ct2, getChartConfig(rcd[1].labels, rcd[1].datasets));
+            const cr3 = new Chart(ct3, getChartConfig(rcd[2].labels, rcd[2].datasets));
+
+            const cr4 = new Chart(ct4, getChartConfig([], []));
+            const cr5 = new Chart(ct5, getChartConfig([], []));
+            const cr6 = new Chart(ct6, getChartConfig([], []));
+
+            document.querySelectorAll('.chart-filter-1').forEach(cf => {
+                cf.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    const ix = cr1.data.datasets.findIndex(ds => ds.label === lb);
+
+                    if (ix !== -1) {
+                        if (cr1.getDatasetMeta(ix).hidden == true) {
+                            cr1.getDatasetMeta(ix).hidden = false;
+                        } else {
+                            cr1.getDatasetMeta(ix).hidden = true;
+                        }
+                        
+                        cr1.update();
+                    }
+                });
+            });
+
+            document.querySelectorAll('.chart-filter-2').forEach(cf => {
+                cf.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    const ix = cr2.data.datasets.findIndex(ds => ds.label === lb);
+
+                    if (ix !== -1) {
+                        if (cr2.getDatasetMeta(ix).hidden == true) {
+                            cr2.getDatasetMeta(ix).hidden = false;
+                        } else {
+                            cr2.getDatasetMeta(ix).hidden = true;
+                        }
+                        
+                        cr2.update();
+                    }
+                });
+            });
+
+            document.querySelectorAll('.chart-filter-3').forEach(cf => {
+                cf.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    const ix = cr3.data.datasets.findIndex(ds => ds.label === lb);
+
+                    if (ix !== -1) {
+                        if (cr3.getDatasetMeta(ix).hidden == true) {
+                            cr3.getDatasetMeta(ix).hidden = false;
+                        } else {
+                            cr3.getDatasetMeta(ix).hidden = true;
+                        }
+                        
+                        cr3.update();
+                    }
+
+                    document.getElementById('reset-click').click()
+                });
+            });
+
+            document.querySelectorAll('.chart-filter-4').forEach(cf => {
+                cf.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    const ix = cr4.data.datasets.findIndex(ds => ds.label === lb);
+
+                    if (ix !== -1) {
+                        if (cr4.getDatasetMeta(ix).hidden == true) {
+                            cr4.getDatasetMeta(ix).hidden = false;
+                        } else {
+                            cr4.getDatasetMeta(ix).hidden = true;
+                        }
+                        
+                        cr4.update();
+                    }
+
+                    document.getElementById('reset-click').click()
+                });
+            });
+
+            document.querySelectorAll('.chart-filter-5').forEach(cf => {
+                cf.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    const ix = cr5.data.datasets.findIndex(ds => ds.label === lb);
+
+                    if (ix !== -1) {
+                        if (cr5.getDatasetMeta(ix).hidden == true) {
+                            cr5.getDatasetMeta(ix).hidden = false;
+                        } else {
+                            cr5.getDatasetMeta(ix).hidden = true;
+                        }
+                        
+                        cr5.update();
+                    }
+
+                    document.getElementById('reset-click').click()
+                });
+            });
+
+            document.querySelectorAll('.chart-filter-6').forEach(cf => {
+                cf.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    const ix = cr6.data.datasets.findIndex(ds => ds.label === lb);
+
+                    if (ix !== -1) {
+                        if (cr6.getDatasetMeta(ix).hidden == true) {
+                            cr6.getDatasetMeta(ix).hidden = false;
+                        } else {
+                            cr6.getDatasetMeta(ix).hidden = true;
+                        }
+                        
+                        cr6.update();
+                    }
+
+                    document.getElementById('reset-click').click()
+                });
+            });
+
+            document.querySelectorAll('.icon-filter').forEach(ic => {
+                if (ic.classList.contains('pills')) {
+                    return;
+                }
+
+                ic.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    if (lb !== undefined || lb !== null) {
+                        if (this.classList.contains('disabled')) {
+                            this.classList.remove('disabled');
+                        } else {
+                            this.classList.add('disabled')
+                        }
+                    }
+                });
+            });
+
+            document.querySelectorAll('.btn-view-data').forEach(button => {
+                button.addEventListener('click', async function() {
+                    const pr = $(this).data('prediction-dt').split('.')[0];
+                    const st = $(this).data('record-start');
+                    const en = $(this).data('record-end');
+
+                    const ndt = await getSpecificRecords(st, en);
+
+                    await setNewPredictionChartData(cr4, ndt[0]);
+                    await setNewPredictionChartData(cr5, ndt[1]);
+                    await setNewPredictionChartData(cr6, ndt[2]);
+
+                    document.getElementById('subtitle-prediction').innerText = `Data used to perform prediction at ${pr}`; 
+                });
+            });
+
+            setInterval(async () => { 
+                const ndt = await getRecords(60000);
+
+                await setNewChartData(cr1, ndt[0]);
+                await setNewChartData(cr2, ndt[1]);
+                await setNewChartData(cr3, ndt[2]);
+
+                await getSidebarData(60000);
+            }, 6000);
+
+            setInterval(async () => { await setPredictionNotification(); }, 1.5 * 60 * 1000);
         }
 
         async function fetchRecords(rng) {
@@ -25,14 +235,14 @@
         async function fetchPredictionLog() {
             const nme = @json($nme);
             const par = new URLSearchParams({
-                'count'     : 1,
-                'well_name' : nme
+                'count' : 1,
+                'name'  : nme
             }).toString();
 
             const bse = `${baseurl}/${baseprefix}/log`;
             const url = `${bse}?${par}`;
             const res = await get(url).then(data => data).catch(error => error);
-            return res.response;
+            return res.response.data;
         }
 
         async function getSidebarData(mil = 0) {
@@ -195,6 +405,352 @@
            return [cc1, cc2, cc3];
         }
 
+        async function getSpecificRecords(start, end) {
+            const rng = {'start': start, 'end': end};
+            const req = await fetchRecords(rng);
+
+            //-- chart data
+            const tme = [];
+            const dph = [], btd = [], bvd = [];
+            const trq = [], rpi = [], wob = [];
+            const prs = [], rpm = [], hkl = [], bps = [];
+
+            //-- others data
+            const sfm = [], fli = [], flo = [];
+
+            if (req.length !== 0) {
+                const rcd = req.well_record;
+                rcd.forEach(elm => {
+                    const md       = parseFloat(elm.md);
+                    const bvdepth  = parseFloat(elm.deptbitv);
+                    const bitdepth = parseFloat(elm.bitdepth);
+
+                    const woba   = parseFloat(elm.woba);
+                    const ropi   = parseFloat(elm.ropi);
+                    const torque = parseFloat(elm.torqa);
+                    
+                    const rpma     = parseFloat(elm.rpm);
+                    const hklda    = parseFloat(elm.hklda);
+                    const blockpos = parseFloat(elm.blockpos);
+                    const stppress = parseFloat(elm.stppress);
+
+                    const scfm       = parseFloat(elm.scfm);
+                    const mudflowin  = parseFloat(elm.mudflowin);
+                    const mudflowout = parseFloat(elm.mudflowout);
+
+                    tme.push(elm.time)
+                    dph.push(md); btd.push(bitdepth); bvd.push(bvdepth);
+                    trq.push(torque); rpi.push(ropi); wob.push(woba);
+                    prs.push(stppress); rpm.push(rpma); hkl.push(hklda); bps.push(blockpos);
+                    
+                    fli.push(mudflowin); flo.push(mudflowout); sfm.push(scfm);
+                });
+
+                noData = false;
+            } else {
+                const current = new Date().toTimeString().slice(0, 8);
+
+                tme.push(current);
+                dph.push(0); btd.push(0); bvd.push(0);
+                trq.push(0); rpi.push(0); wob.push(0);
+                prs.push(0); rpm.push(0); hkl.push(0); bps.push(0);
+                
+                fli.push(0); flo.push(0); sfm.push(0);
+
+                noData = true;
+            }
+
+            const cc4 = {
+                'labels': tme,
+                'datasets': [
+                    {label: 'depth', data: dph, borderColor: 'rgba(0, 166, 113, .75)'},
+                    {label: 'bit-depth', data: bvd, borderColor: 'rgba(0, 97, 166, .75)'},
+                    {label: 'bv-depth', data: btd, borderColor: 'rgba(166, 161, 0, .75)'}
+                ],
+            };
+
+            const cc5 = {
+                'labels': tme,
+                'datasets': [
+                    {label: 'torque', data: trq, borderColor: 'rgba(166, 0, 86, .75)'},
+                    {label: 'ropi', data: rpi, borderColor: 'rgba(0, 97, 166, .75)'},
+                    {label: 'wob', data: wob, borderColor: 'rgba(105, 0, 166, .75)'}
+                ],
+            };
+
+            const cc6 = {
+                'labels': tme,
+                'datasets': [
+                    {label: 'stppress', data: prs, borderColor: 'rgba(166, 0, 136, .75)'},
+                    {label: 'rpm', data: rpm, borderColor: 'rgba(0, 97, 166, .75)'},
+                    {label: 'hkld', data: hkl, borderColor: 'rgba(0, 166, 158, .75)'},
+                    {label: 'block-pos', data: bps, borderColor: 'rgba(0, 166, 89, .75)'}
+                ],
+            }; 
+
+           return [cc4, cc5, cc6];
+        }
+
+        function getPredictionTable() {
+            const tbl = $('#table-notification').DataTable({
+                pagingType: 'full',
+                paging: true,
+                ordering: false,
+                searching: false,
+                processing: true,
+                serverSide: true,
+                responsive: false,
+                autoWidth: false,
+                ajax: function(data, callback, settings) {
+                    const bse = `${baseurl}/${baseprefix}/log`;
+                    const pge = Math.floor(data.start / data.length) + 1;
+                    const nme = @json($nme);
+                    const par = new URLSearchParams({
+                        'name' : nme,
+                        'count': data.length,
+                        'page' : pge,
+                        'start': dst,
+                        'end'  : den
+                    }).toString();
+
+                    $.ajax({
+                        url: `${bse}?${par}`,
+                        success: function(json) {
+                            callback({
+                                draw: data.draw,
+                                recordsTotal: json.response.total,
+                                recordsFiltered: json.response.total,
+                                data: json.response.data
+                            });
+                        }
+                    });
+                },
+                columns: [
+                    { data: 'id', name: 'id', visible: false },
+                    { 
+                        data: 'date', 
+                        name: 'date', 
+                        visible: true,
+                        render: function (data, type, row, meta) {
+                            const dat = data.split('.')[0];
+                            return dat;
+                        } 
+                    },
+                    { 
+                        data: 'record_st', 
+                        name: 'record_st', 
+                        visible: true,
+                        render: function (data, type, row, meta) {
+                            const dat = data.split('.')[0];
+                            return dat;
+                        } 
+                    },
+                    { 
+                        data: 'record_en', 
+                        name: 'record_en', 
+                        visible: true,
+                        render: function (data, type, row, meta) {
+                            const dat = data.split('.')[0];
+                            return dat;
+                        } 
+                    },
+                    { data: 'well_tk'  , name: 'well_tk'  , visible: false },
+                    { data: 'well_id'  , name: 'well_id'  , visible: false },
+                    { 
+                        data: 'stats_sr' , 
+                        name: 'stats_sr' , 
+                        visible: true,
+                        render: function (data, type, row, meta) {
+                            var btn;
+                            if (data) {
+                                btn = `                    
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status normal"> 
+                                        <i class="ti ti-wave-square"></i>
+                                    </button>
+                                </div>`;
+
+                            } else {
+                                btn = `
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status danger"> 
+                                        <i class="ti ti-x"></i>
+                                    </button>
+                                </div>`;
+                            }
+
+                            return btn;
+                        }
+                    },
+                    { 
+                        data: 'stats_cr', 
+                        name: 'stats_cr', 
+                        visible: true,
+                        render: function (data, type, row, meta) {
+                            var btn;
+                            if (data) {
+                                btn = `                    
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status normal"> 
+                                        <i class="ti ti-droplet-half-filled"></i>
+                                    </button>
+                                </div>`;
+
+                            } else {
+                                btn = `
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status danger"> 
+                                        <i class="ti ti-droplet-off"></i>
+                                    </button>
+                                </div>`;
+                            }
+
+                            return btn;
+                        }
+                    },
+                    { 
+                        data: 'stats_rt' , 
+                        name: 'stats_rt' , 
+                        visible: true,
+                        render: function (data, type, row, meta) {
+                            var btn;
+                            if (!data) {
+                                btn = `                    
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status normal"> 
+                                        <i class="ti ti-wave-square"></i>
+                                    </button>
+                                </div>`;
+
+                            } else {
+                                btn = `
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status danger"> 
+                                        <i class="ti ti-trending-up"></i>
+                                    </button>
+                                </div>`;
+                            }
+
+                            return btn;
+                        }
+                    },
+                    { 
+                        data: 'stats_sl' , 
+                        name: 'stats_sl' , 
+                        visible: true,
+                        render: function (data, type, row, meta) {
+                            var btn;
+                            if (data === 'true') {
+                                btn = `
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status danger"> 
+                                        <i class="ti ti-irregular-polyhedron-off"></i>
+                                    </button>
+                                </div>`;
+
+                            } else {
+                                btn = `                    
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status normal"> 
+                                        <i class="ti ti-irregular-polyhedron"></i>
+                                    </button>
+                                </div>`;
+                            }
+
+                            return btn;
+                        }
+                    },
+                    { 
+                        data: 'stats_cl', 
+                        name: 'stats_cl', 
+                        visible: true,
+                        render: function (data, type, row, meta) {
+                            var btn;
+                            if (data) {
+                                btn = `                    
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status normal"> 
+                                        <i class="ti ti-wall"></i>
+                                    </button>
+                                </div>`;
+
+                            } else {
+                                btn = `
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status danger"> 
+                                        <i class="ti ti-wall-off"></i>
+                                    </button>
+                                </div>`;
+                            }
+
+                            return btn;
+                        }
+                    },
+                    { 
+                        data: 'well_pr', 
+                        name: 'well_pr', 
+                        visible: true,
+                        render: function (data, type, row, meta) {
+                            var btn;
+                            if (data === 0) {
+                                btn = `                    
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status normal"> 
+                                        <i class="ti ti-checks"></i>
+                                    </button>
+                                </div>`;
+
+                            } else if (data === 1) {
+                                btn = `
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status danger"> 
+                                        <i class="ti ti-alert-octagon"></i>
+                                    </button>
+                                </div>`;
+
+                            } else {
+                                btn = ` 
+                                <div class="td-groups">
+                                    <button type="button" class="btn btn-status warning"> 
+                                        <i class="ti ti-file-unknown"></i>
+                                    </button>
+                                </div>`;
+                            }
+
+                            return btn;
+                        }
+                    },
+                    { data: 'message'  , name: 'message'  , visible: false },
+                    { 
+                        data: null, 
+                        name: 'action', 
+                        visible: true,
+                        render: function (data, type, row, meta) {
+                            const btn = `
+                                    <div class="td-groups">
+                                        <button type="button" class="btn btn-status btn-view-data" data-prediction-dt="${row.date}" data-record-start="${row.record_st}" data-record-end="${row.record_en}"> 
+                                            <i class="ti ti-zoom-scan"></i>
+                                        </button>
+                                    </div>`;
+
+                            return btn;
+                        }
+                    },
+                ],
+                columnDefs: [
+                    { width: '12%', targets: [1,2,3] },
+                    { class: 'text-center', targets: [1,2,3] },
+                    { class: 'd-none d-xl-table-cell', targets: [2,3] }
+                ],
+                initComplete: function() {
+                    this.api().responsive.recalc();
+                    $(window).trigger('resize');
+                },
+            });
+
+            return tbl;
+        }
+
         function setNewChartData(chart, newData) {
             chart.data.labels.push(...newData.labels);
             chart.data.datasets.forEach((dataset, i) => {
@@ -220,6 +776,19 @@
 
             if (chart.data.labels.length > 30) {
                 const excess = chart.data.labels.length - 30;
+                chart.data.labels.splice(0, excess);
+                chart.data.datasets.forEach(d => d.data.splice(0, excess));
+            }
+
+            chart.update();
+        }
+
+        function setNewPredictionChartData(chart, newData) {
+            chart.data.labels = newData.labels;
+            chart.data.datasets = newData.datasets;
+
+            if (chart.data.labels.length > 60) {
+                const excess = chart.data.labels.length - 60;
                 chart.data.labels.splice(0, excess);
                 chart.data.datasets.forEach(d => d.data.splice(0, excess));
             }
@@ -397,7 +966,7 @@
             //-- stall status
             var scs = stall ? 'danger' : '';
             var sic = !stall ? 'ti-irregular-polyhedron' : 'ti-irregular-polyhedron-off';
-            var sdc = !stall ? 'no stall formation' : 'stall formation!';
+            var sdc = stall ? 'stall formation!' : 'no stall formation';
 
             //-- torque status
             var tcs = torque ? 'danger' : '';
@@ -453,97 +1022,14 @@
         }
 
         document.addEventListener('DOMContentLoaded', async function() {
-            init();
+            dst = '2000-01-01 00:00:00';
+            den = getToday();
 
-            const ct1 = document.getElementById('chart1').getContext('2d');
-            const ct2 = document.getElementById('chart2').getContext('2d');
-            const ct3 = document.getElementById('chart3').getContext('2d');
+            //-- run all jquery related code
+            await initJqueryCodes();
 
-            const rcd = await getRecords(2.5 * 60 * 1000);
-            const sdb = await getSidebarData(60000);
-            const plg = await setPredictionNotification();
-
-            const cr1 = new Chart(ct1, getChartConfig(rcd[0].labels, rcd[0].datasets));
-            const cr2 = new Chart(ct2, getChartConfig(rcd[1].labels, rcd[1].datasets));
-            const cr3 = new Chart(ct3, getChartConfig(rcd[2].labels, rcd[2].datasets));
-
-            setInterval(async () => { 
-                const ndt = await getRecords(60000);
-
-                await setNewChartData(cr1, ndt[0]);
-                await setNewChartData(cr2, ndt[1]);
-                await setNewChartData(cr3, ndt[2]);
-
-                await getSidebarData(60000);
-            }, 6000);
-
-            setInterval(async () => { await setPredictionNotification(); }, 1.5 * 60 * 1000);;
-
-            document.querySelectorAll('.chart-filter-1').forEach(cf => {
-                cf.addEventListener('click', function() {
-                    const lb = this.getAttribute('data-chart');
-                    const ix = cr1.data.datasets.findIndex(ds => ds.label === lb);
-
-                    if (ix !== -1) {
-                        if (cr1.getDatasetMeta(ix).hidden == true) {
-                            cr1.getDatasetMeta(ix).hidden = false;
-                        } else {
-                            cr1.getDatasetMeta(ix).hidden = true;
-                        }
-                        
-                        cr1.update();
-                    }
-                });
-            });
-
-            document.querySelectorAll('.chart-filter-2').forEach(cf => {
-                cf.addEventListener('click', function() {
-                    const lb = this.getAttribute('data-chart');
-                    const ix = cr2.data.datasets.findIndex(ds => ds.label === lb);
-
-                    if (ix !== -1) {
-                        if (cr2.getDatasetMeta(ix).hidden == true) {
-                            cr2.getDatasetMeta(ix).hidden = false;
-                        } else {
-                            cr2.getDatasetMeta(ix).hidden = true;
-                        }
-                        
-                        cr2.update();
-                    }
-                });
-            });
-
-            document.querySelectorAll('.chart-filter-3').forEach(cf => {
-                cf.addEventListener('click', function() {
-                    const lb = this.getAttribute('data-chart');
-                    const ix = cr3.data.datasets.findIndex(ds => ds.label === lb);
-
-                    if (ix !== -1) {
-                        if (cr3.getDatasetMeta(ix).hidden == true) {
-                            cr3.getDatasetMeta(ix).hidden = false;
-                        } else {
-                            cr3.getDatasetMeta(ix).hidden = true;
-                        }
-                        
-                        cr3.update();
-                    }
-
-                    document.getElementById('reset-click').click()
-                });
-            });
-
-            document.querySelectorAll('.icon-filter').forEach(ic => {
-                ic.addEventListener('click', function() {
-                    const lb = this.getAttribute('data-chart');
-                    if (lb !== undefined || lb !== null) {
-                        if (this.classList.contains('disabled')) {
-                            this.classList.remove('disabled');
-                        } else {
-                            this.classList.add('disabled')
-                        }
-                    }
-                });
-            });
+            //-- run all vanila code
+            await initVanilaCodes();
 
             document.getElementById("loading-cover").remove();
         });
