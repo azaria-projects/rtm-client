@@ -12,7 +12,7 @@
             <div class="card-header">
                 <i class="ti ti-keyframes me-1 d-none d-sm-block"></i>
                 <div class="container-column">
-                    <p class="card-subtitle">Drilling sensor displayed in vertical line charts</p>
+                    <p class="card-subtitle">Depth sensor data taken from API every 5s</p>
                     <p class="card-title">DEPTH LINE CHART</p>
                 </div>
             </div>
@@ -53,7 +53,7 @@
             <div class="card-header">
                 <i class="ti ti-tic-tac me-1 d-none d-sm-block"></i>
                 <div class="container-column">
-                    <p class="card-subtitle">potential stuck <b>prediction for 5 minute</b> in the future</p>
+                    <p class="card-subtitle">Potential stuck <b>prediction for 5 minute</b> in the future</p>
                     <p class="card-title">POTENTIAL STUCK PREDICTION</p>
                 </div>
             </div>
@@ -69,7 +69,7 @@
             <div class="card-header">
                 <i class="ti ti-crane me-1 d-none d-sm-block"></i>
                 <div class="container-column">
-                    <p class="card-subtitle">Drilling sensor displayed in vertical line charts</p>
+                    <p class="card-subtitle">Drilling sensor data taken from API every 5ss</p>
                     <p class="card-title">DRILLING LINE CHART</p>
                 </div>
             </div>
@@ -110,7 +110,7 @@
             <div class="card-header">
                 <i class="ti ti-tournament me-1 d-none d-sm-block"></i>
                 <div class="container-column">
-                    <p class="card-subtitle">Drilling sensor displayed in vertical line charts</p>
+                    <p class="card-subtitle">Bit string sensor data taken from API every 5s</p>
                     <p class="card-title">BIT STRING CHART DATA</p>
                 </div>
             </div>

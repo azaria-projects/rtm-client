@@ -77,7 +77,7 @@
             <div class="card-header">
                 <i class="ti ti-keyframes me-1 d-none d-sm-block"></i>
                 <div class="container-column">
-                    <p class="card-subtitle">Drilling sensor displayed in vertical line charts</p>
+                    <p class="card-subtitle">Depth sensor data used in the selected prediction date</p>
                     <p class="card-title">DEPTH LINE CHART</p>
                 </div>
             </div>
@@ -118,7 +118,7 @@
             <div class="card-header">
                 <i class="ti ti-crane me-1 d-none d-sm-block"></i>
                 <div class="container-column">
-                    <p class="card-subtitle">Drilling sensor displayed in vertical line charts</p>
+                    <p class="card-subtitle">Drilling sensor data used in the selected prediction date</p>
                     <p class="card-title">DRILLING LINE CHART</p>
                 </div>
             </div>
@@ -159,7 +159,7 @@
             <div class="card-header">
                 <i class="ti ti-tournament me-1 d-none d-sm-block"></i>
                 <div class="container-column">
-                    <p class="card-subtitle">Drilling sensor displayed in vertical line charts</p>
+                    <p class="card-subtitle">Bit String data used in the selected prediction date</p>
                     <p class="card-title">BIT STRING CHART DATA</p>
                 </div>
             </div>
