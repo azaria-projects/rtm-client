@@ -22,3 +22,6 @@ Route::middleware([CookiesMiddleware::class])->group(function () {
     });
 });
 
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/rtm/test', 'test')->name('rtm.test');
+});

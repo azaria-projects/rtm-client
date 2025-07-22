@@ -1,5 +1,10 @@
 .btn {
     box-shadow: none !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+    * {
+        text-decoration: none !important;
+    }
 }
 
 .btn-group-vertical button {
@@ -62,6 +67,19 @@
 
 .btn-secondary:hover {
     background-color: var(--system-colors-teal-primary) !important;
+}
+
+.btn-tetiary {
+    padding: 8px 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    background-color: var(--system-colors-black-quaternary) !important;
+    border: 1.5px solid var(--system-colors-black-secondary) !important;
+}
+
+.btn-tetiary:hover {
+    background-color: var(--system-colors-blue-primary) !important;
+    border: 1.5px solid var(--system-colors-blue-primary) !important;
 }
 
 .btn-status {

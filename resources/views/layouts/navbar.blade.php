@@ -34,9 +34,11 @@
                         <i class="ti ti-calendar-clock me-2"></i>
                     </div>
 
-                    <div class="btn-logout only-icon-filter" style="cursor: pointer;">
-                        <i class="ti ti-power"></i>
-                    </div>
+                    @if (Route::currentRouteName() !== 'rtm.test')
+                        <div class="btn-logout only-icon-filter" style="cursor: pointer;">
+                            <i class="ti ti-power"></i>
+                        </div>
+                    @endif
     
                     <div class="only-icon-filter" data-lte-toggle="sidebar" role="button">
                         <i class="ti ti-layout-sidebar-right-expand"></i>

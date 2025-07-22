@@ -4,6 +4,11 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             getCurrentDateTime();
+            
+            const err = @json(session('error'));
+            if (err) {
+                toastr.error(err);
+            }
 
             document.getElementById('form-login').addEventListener('submit', async function(e) {
                 e.preventDefault(); 
@@ -78,11 +83,18 @@
                     <input type="password" class="form-control" id="user-password" name="password" placeholder="Password">
                 </div>
 
-                <div class="btn-group-vertical gap-2 w-100 mt-3" role="group">
+                <div class="btn-group-vertical gap-2 w-100 mt-3 mb-2" role="group">
                     <button id="btn-submit" type="submit" class="btn btn-primary"> 
                         <span id="btn-spinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
                         <span id="btn-text" class="btn-text ms-1"> Login </span>
                     </button>
+                </div>
+
+                <div class="btn-group-vertical gap-2 w-100" role="group">
+                    <button id="btn-test" type="button" class="btn btn-tetiary"> 
+                        <a id="btn-text" href="{{ route('rtm.test') }}" class="btn-text ms-1" style="color: white;"> View Demo Instead ? </a>
+                    </button>
+
                 </div>
 
                 <div class="d-flex my-2">

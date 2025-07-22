@@ -27,6 +27,20 @@ class HomeController extends Controller
         return view('pages.rtm.index', compact('sat', 'zon', 'nme', 'tkn', 'com', 'str', 'end', 'typ'));
     }
 
+    public function test()
+    {
+        $sat = 'well_active';
+        $zon = 'jakarta/indonesia';
+        $nme = 'Test Well';
+        $tkn = '';
+        $com = 'PT. Test Drilling';
+        $str = '';
+        $end = '';
+        $typ = 'Geothermal';
+
+        return view('pages.rtm.test', compact('sat', 'zon', 'nme', 'tkn', 'com', 'str', 'end', 'typ'));
+    }
+
     public function select()
     {
         $url = sprintf('%s/%s/well/active', getenv('VITE_EXSERVER_URL'), getenv('VITE_EXSERVER_PREFIX'));
