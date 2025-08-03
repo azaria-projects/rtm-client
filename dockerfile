@@ -1,60 +1,63 @@
-# Stage 1
-FROM php:8.2-cli-alpine AS build
+# Stage 1: Build with Composer, Node, etc.
+FROM php:8.2-cli AS build
 
-RUN apk add --no-cache \
+# Install dependencies (Debian-based)
+RUN apt-get update && apt-get install -y \
     libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     libzip-dev \
-    oniguruma-dev \
-    git \
-    curl \
     zip \
     unzip \
+    git \
+    curl \
+    nodejs \
+    npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install mbstring gd zip
+    && docker-php-ext-install gd mbstring zip \
+    && apt-get clean
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- \
+    --install-dir=/usr/local/bin \
+    --filename=composer
 
 WORKDIR /app
 COPY . /app
 COPY .env.example /app/.env
 
-ADD https://curl.se/ca/cacert.pem /etc/ssl/certs/cacert.pem
-ENV SSL_CERT_FILE=/etc/ssl/certs/cacert.pem
-
+# Install PHP deps
 RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader --no-suggest
 
-RUN apk add --no-cache nodejs npm \
-    && rm -rf node_modules package-lock.json \
+# Install and build frontend assets
+RUN rm -rf node_modules package-lock.json \
     && npm install \
     && npm run build
 
-RUN php artisan config:clear
-RUN php artisan route:clear
+# Laravel prep
+RUN php artisan config:clear \
+    && php artisan route:clear \
+    && php artisan key:generate \
+    && php artisan migrate
 
-RUN php artisan key:generate
-RUN php artisan migrate
+---
 
-# Stage 2
-FROM php:8.2-cli-alpine
+# Stage 2: Clean runtime container
+FROM php:8.2-cli
 
-RUN apk add --no-cache \
-    libpng \
-    libjpeg-turbo \
-    freetype \
-    libzip \
+# Install only required runtime libs
+RUN apt-get update && apt-get install -y \
+    libpng16-16 \
+    libjpeg62-turbo \
+    libfreetype6 \
+    libzip4 \
     ca-certificates \
-    && update-ca-certificates
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-ADD https://curl.se/ca/cacert.pem /etc/ssl/certs/cacert.pem
-ENV SSL_CERT_FILE=/etc/ssl/certs/cacert.pem
-
+# Copy built app
 COPY --from=build /app /app
-# RUN rm -f /app/.env
-
 WORKDIR /app
 
 EXPOSE 8000
-
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
