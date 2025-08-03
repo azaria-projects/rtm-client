@@ -54,7 +54,7 @@ class AuthMiddleware
                 ->route('login')
                 ->withCookie(Cookie::forget('token'))
                 ->withCookie(Cookie::forget('well'))
-                ->with('error', 'server unavailable! try accessing it later!');
+                ->with('error', $e->getMessage());
         }
     }
 }
