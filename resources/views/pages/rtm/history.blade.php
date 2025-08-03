@@ -72,7 +72,7 @@
     </div>
 
     {{-- chart 4 --}}
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6" style="height: 1200px;">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
         <div class="card h-100">
             <div class="card-header">
                 <i class="ti ti-keyframes me-1 d-none d-sm-block"></i>
@@ -105,7 +105,7 @@
                     </div>
                 </div>
 
-                <div class="chart-container">
+                <div class="chart-container" style="height: 1200px;">
                     <canvas id="chart4"></canvas>
                 </div>
             </div>
@@ -113,7 +113,7 @@
     </div>
 
     {{-- chart 5 --}}
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6" style="height: 1200px;">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
         <div class="card">
             <div class="card-header">
                 <i class="ti ti-crane me-1 d-none d-sm-block"></i>
@@ -146,7 +146,7 @@
                     </div>
                 </div>
 
-                <div class="chart-container">
+                <div class="chart-container" style="height: 1200px;">
                     <canvas id="chart5"></canvas>
                 </div>
             </div>
@@ -154,7 +154,7 @@
     </div>
 
     {{-- chart 6 --}}
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6" style="height: 1200px;">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
         <div class="card">
             <div class="card-header">
                 <i class="ti ti-tournament me-1 d-none d-sm-block"></i>
@@ -194,7 +194,7 @@
                     </div>
                 </div>
 
-                <div class="chart-container">
+                <div class="chart-container" style="height: 1200px;">
                     <canvas id="chart6"></canvas>
                 </div>
             </div>

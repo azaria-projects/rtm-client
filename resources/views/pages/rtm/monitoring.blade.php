@@ -7,7 +7,7 @@
 
 <div class="row row-gap-4">
     {{-- chart 1 --}}
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-7" style="height: 800px;">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-7">
         <div class="card h-100">
             <div class="card-header">
                 <i class="ti ti-keyframes me-1 d-none d-sm-block"></i>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <div class="chart-container">
+                <div class="chart-container" style="height: 800px;">
                     <canvas id="chart1"></canvas>
                 </div>
             </div>
@@ -48,7 +48,7 @@
     </div>
 
     {{-- prediction notification --}}
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-5" style="height: 800px;">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-5">
         <div class="card predict-notification">
             <div class="card-header">
                 <i class="ti ti-tic-tac me-1 d-none d-sm-block"></i>
@@ -64,7 +64,7 @@
     </div>
 
     {{-- chart 2 --}}
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6" style="height: 800px;">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
         <div class="card">
             <div class="card-header">
                 <i class="ti ti-crane me-1 d-none d-sm-block"></i>
@@ -97,7 +97,7 @@
                     </div>
                 </div>
 
-                <div class="chart-container">
+                <div class="chart-container" style="height: 800px;">
                     <canvas id="chart2"></canvas>
                 </div>
             </div>
@@ -105,7 +105,7 @@
     </div>
 
     {{-- chart 3 --}}
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6" style="height: 800px;">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
         <div class="card">
             <div class="card-header">
                 <i class="ti ti-tournament me-1 d-none d-sm-block"></i>
@@ -136,7 +136,6 @@
                             'tt' => 'RPM'
                         ])
 
-
                         @include('components.btn-filter', [
                             'ic' => 'ti-blocks',
                             'nb' => 'chart-filter-3',
@@ -145,7 +144,7 @@
                     </div>
                 </div>
 
-                <div class="chart-container">
+                <div class="chart-container" style="height: 800px;">
                     <canvas id="chart3"></canvas>
                 </div>
             </div>
