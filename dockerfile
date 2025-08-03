@@ -40,7 +40,9 @@ RUN apk add --no-cache \
     libpng \
     libjpeg-turbo \
     freetype \
-    libzip
+    libzip \
+    ca-certificates \
+    && update-ca-certificates
 
 COPY --from=build /app /app
 # RUN rm -f /app/.env
