@@ -20,6 +20,9 @@ WORKDIR /app
 COPY . /app
 COPY .env.example /app/.env
 
+ADD https://curl.se/ca/cacert.pem /etc/ssl/certs/cacert.pem
+ENV SSL_CERT_FILE=/etc/ssl/certs/cacert.pem
+
 RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader --no-suggest
 
 RUN apk add --no-cache nodejs npm \
