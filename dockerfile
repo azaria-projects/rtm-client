@@ -47,6 +47,9 @@ RUN apk add --no-cache \
     ca-certificates \
     && update-ca-certificates
 
+ADD https://curl.se/ca/cacert.pem /etc/ssl/certs/cacert.pem
+ENV SSL_CERT_FILE=/etc/ssl/certs/cacert.pem
+
 COPY --from=build /app /app
 # RUN rm -f /app/.env
 
