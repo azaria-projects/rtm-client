@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <div id="prediction-notification" class="notification"> </div>
+                <div id="prediction-notification" class="notification" style="height: 800px !important;"> </div>
             </div>
         </div>
     </div>
