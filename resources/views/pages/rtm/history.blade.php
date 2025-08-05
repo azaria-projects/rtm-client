@@ -62,7 +62,7 @@
         </div>
 
     </div>
-
+    
     <div class="col-12">
         <div class="d-flex align-items-center">
             <p id="title-prediction" class="page-header mb-0 me-2">PREDICTION DATA</p>
@@ -71,133 +71,103 @@
         <p id="subtitle-prediction" class="page-subheader mb-0">No Data! Please select prediction date!</p>
     </div>
 
-    {{-- chart 4 --}}
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
-        <div class="card h-100">
-            <div class="card-header">
-                <i class="ti ti-keyframes me-1 d-none d-sm-block"></i>
-                <div class="container-column">
-                    <p class="card-subtitle">Depth sensor data used in the selected prediction date</p>
-                    <p class="card-title">DEPTH LINE CHART</p>
-                </div>
-            </div>
-
-            <div class="card-body h-100">
-                <div class="d-flex gap-4 justify-content-between">
-                    <div class="icon-filter-group">
-                        @include('components.btn-filter', [
-                            'ic' => 'ti-arrow-down-dashed',
-                            'nb' => 'chart-filter-4',
-                            'tt' => 'Depth'
-                        ])
-
-                        @include('components.btn-filter', [
-                            'ic' => 'ti-arrows-transfer-up-down',
-                            'nb' => 'chart-filter-4',
-                            'tt' => 'BV-Depth'
-                        ])
-
-                        @include('components.btn-filter', [
-                            'ic' => 'ti-needle-thread',
-                            'nb' => 'chart-filter-4',
-                            'tt' => 'Bit-Depth'
-                        ])
-                    </div>
-                </div>
-
-                <div class="chart-container" style="height: 1200px;">
-                    <canvas id="chart4"></canvas>
-                </div>
-            </div>
-        </div>
+    {{-- depth chart --}}
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+        @include('components.chart-graph', [
+            'cti' => 'depth',
+            'ccn' => 'v-depth',
+            'csb' => 'Sensor Data',
+            'clg' => 'ti-arrow-down-dashed',
+        ])
     </div>
 
-    {{-- chart 5 --}}
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
-        <div class="card">
-            <div class="card-header">
-                <i class="ti ti-crane me-1 d-none d-sm-block"></i>
-                <div class="container-column">
-                    <p class="card-subtitle">Drilling sensor data used in the selected prediction date</p>
-                    <p class="card-title">DRILLING LINE CHART</p>
-                </div>
-            </div>
-
-            <div class="card-body h-100">
-                <div class="d-flex gap-4 justify-content-between">
-                    <div class="icon-filter-group">
-                        @include('components.btn-filter', [
-                            'ic' => 'ti-whirl',
-                            'nb' => 'chart-filter-5',
-                            'tt' => 'Torque'
-                        ])
-
-                        @include('components.btn-filter', [
-                            'ic' => 'ti-stack-push',
-                            'nb' => 'chart-filter-5',
-                            'tt' => 'ROPi'
-                        ])
-
-                        @include('components.btn-filter', [
-                            'ic' => 'ti-arrow-big-down-lines',
-                            'nb' => 'chart-filter-5',
-                            'tt' => 'WOB'
-                        ])
-                    </div>
-                </div>
-
-                <div class="chart-container" style="height: 1200px;">
-                    <canvas id="chart5"></canvas>
-                </div>
-            </div>
-        </div>
+    {{-- bitdepth chart --}}
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+        @include('components.chart-graph', [
+            'cti' => 'bitdepth',
+            'ccn' => 'v-bitdepth',
+            'csb' => 'Sensor Data',
+            'clg' => 'ti-arrows-transfer-up-down',
+        ])
     </div>
 
-    {{-- chart 6 --}}
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
-        <div class="card">
-            <div class="card-header">
-                <i class="ti ti-tournament me-1 d-none d-sm-block"></i>
-                <div class="container-column">
-                    <p class="card-subtitle">Bit String data used in the selected prediction date</p>
-                    <p class="card-title">BIT STRING CHART DATA</p>
-                </div>
-            </div>
+    {{-- bvdepth chart --}}
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+        @include('components.chart-graph', [
+            'cti' => 'bvdepth',
+            'ccn' => 'v-bvdepth',
+            'csb' => 'Sensor Data',
+            'clg' => 'ti-needle-thread',
+        ])
+    </div>
 
-            <div class="card-body h-100">
-                <div class="d-flex gap-4 justify-content-between">
-                    <div class="icon-filter-group">
-                        @include('components.btn-filter', [
-                            'ic' => 'ti-propeller',
-                            'nb' => 'chart-filter-6',
-                            'tt' => 'STPPRESS'
-                        ])
+    {{-- bvdepth chart --}}
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+        @include('components.chart-graph', [
+            'cti' => 'block-pos',
+            'ccn' => 'v-blockpos',
+            'csb' => 'Sensor Data',
+            'clg' => 'ti-blocks',
+        ])
+    </div>
 
-                        @include('components.btn-filter', [
-                            'ic' => 'ti-fish-hook',
-                            'nb' => 'chart-filter-6',
-                            'tt' => 'HKLD'
-                        ])
+    {{-- torque chart --}}
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+        @include('components.chart-graph', [
+            'cti' => 'torque',
+            'ccn' => 'v-torque',
+            'csb' => 'Sensor Data',
+            'clg' => 'ti-whirl',
+        ])
+    </div>
 
-                        @include('components.btn-filter', [
-                            'ic' => 'ti-texture',
-                            'nb' => 'chart-filter-6',
-                            'tt' => 'RPM'
-                        ])
+    {{-- ropi chart --}}
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+        @include('components.chart-graph', [
+            'cti' => 'ropi',
+            'ccn' => 'v-ropi',
+            'csb' => 'Sensor Data',
+            'clg' => 'ti-arrow-big-down-lines',
+        ])
+    </div>
 
+    {{-- wob chart --}}
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+        @include('components.chart-graph', [
+            'cti' => 'wob',
+            'ccn' => 'v-wob',
+            'csb' => 'Sensor Data',
+            'clg' => 'ti-stack-push',
+        ])
+    </div>
 
-                        @include('components.btn-filter', [
-                            'ic' => 'ti-blocks',
-                            'nb' => 'chart-filter-6',
-                            'tt' => 'Block-Pos'
-                        ])
-                    </div>
-                </div>
+    {{-- stppress chart --}}
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+        @include('components.chart-graph', [
+            'cti' => 'stppress',
+            'ccn' => 'v-stppress',
+            'csb' => 'Sensor Data',
+            'clg' => 'ti-texture',
+        ])
+    </div>
 
-                <div class="chart-container" style="height: 1200px;">
-                    <canvas id="chart6"></canvas>
-                </div>
-            </div>
-        </div>
+    {{-- hkld chart --}}
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+        @include('components.chart-graph', [
+            'cti' => 'hkld',
+            'ccn' => 'v-hkld',
+            'csb' => 'Sensor Data',
+            'clg' => 'ti-fish-hook',
+        ])
+    </div>
+    
+    {{-- rpm chart --}}
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+        @include('components.chart-graph', [
+            'cti' => 'rpm',
+            'ccn' => 'v-rpm',
+            'csb' => 'Sensor Data',
+            'clg' => 'ti-propeller',
+        ])
     </div>
 </div>

@@ -4,6 +4,7 @@
 @import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
 @import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";
 @import "toastr/build/toastr.min.css";
+@import "tippy.js/dist/tippy.css";
 
 :root {
     --system-size-base: 8px;

@@ -149,50 +149,13 @@
                 await setNewChartData(crd[7],  ndt[7]);
                 await setNewChartData(crd[8],  ndt[8]);
                 await setNewChartData(crd[9],  ndt[9]);
-                await setNewChartData(crd[20], ndt[10]);
+                await setNewChartData1(crd[10], ndt[10]);
 
                 await getSidebarData(rnd);
             }, 1000);
 
             // setInterval(async () => { await setPredictionNotification(); }, 1.5 * 60 * 1000);
-
-            crd[20].options.scales.y = {
-                display: true,
-                beginAtZero: true,
-                grid: {
-                    drawBorder: false,
-                    display: false,
-                    color: '#242424',
-                    borderColor: '#242424',
-                },
-                border: {
-                    display: true,
-                    // color: '#242424',
-                },
-                afterFit: function(axis) {
-                    axis.width = 70;
-                }
-            };
-
-            crd[20].options.scales.x = {
-                display: true,
-                grid: {
-                    display: true,
-                    drawBorder: true,
-                    drawTicks: true,
-                    color: '#242424'
-                },
-                ticks: {
-                    display: true,
-                    color: '#242424',
-                },
-                border: {
-                    display: true,
-                    color: '#242424',
-                },
-                afterFit: function(axis) { axis.width = 0; }
-            };
-            crd[20].update();
+            // updateYAxisLabel(crd[10], true);
 
             const sml = window.matchMedia('(max-width: 576px)');
             updateYAxisLabel(crd[0], !sml.matches);
@@ -332,7 +295,7 @@
             fli.push(dat.fli); 
             flo.push(dat.flo); 
             sfm.push(dat.sfm);
-            lbl.push(0);
+            lbl.push(dat.lbl);
 
             noData = true;
 
@@ -388,15 +351,7 @@
 
             const a_lbl = {
                 'labels': tme,
-                'datasets': [{
-                    label: 'datatime', 
-                    data: lbl, 
-                    borderColor: 'rgba(0, 166, 89, 0)',
-                    pointBackgroundColor: 'rgba(0, 166, 89, 0)',
-                    pointBorderColor: 'rgba(0, 166, 89, 0)',
-                    fill: false,
-                    showLine: false
-                }],
+                'datasets': [ {label: 'datatime', data: lbl, borderColor: 'rgba(0, 166, 89, .75)'} ],
             };
 
            return [a_dph, a_btd, a_bvd, a_trq, a_rpi, a_wob, a_prs, a_rpm, a_hkl, a_bps, a_lbl];
@@ -762,6 +717,41 @@
             return tbl;
         }
 
+        function setNewChartData1(chart, newData) {
+            console.log(newData);
+            console.log('chart.data.datasets before push:', chart.data?.datasets);
+            
+            chart.data.labels.push(...newData.labels);
+            chart.data.datasets.forEach((dataset, i) => {
+                dataset.data.push(...newData.datasets[i].data);
+            });
+
+            const uniqueLabels  = [];
+            const uniqueIndices = [];
+            const seenLabels    = new Set();
+
+            chart.data.labels.forEach((label, index) => {
+                if (!seenLabels.has(label)) {
+                    seenLabels.add(label);
+                    uniqueLabels.push(label);
+                    uniqueIndices.push(index);
+                }
+            });
+
+            chart.data.labels = uniqueLabels;
+            chart.data.datasets.forEach(dataset => {
+                dataset.data = uniqueIndices.map(index => dataset.data[index]);
+            });
+
+            if (chart.data.labels.length > 30) {
+                const excess = chart.data.labels.length - 30;
+                chart.data.labels.splice(0, excess);
+                chart.data.datasets.forEach(d => d.data.splice(0, excess));
+            }
+
+            chart.update();
+        }
+
         function setNewChartData(chart, newData) {
             chart.data.labels.push(...newData.labels);
             chart.data.datasets.forEach((dataset, i) => {
@@ -937,7 +927,7 @@
                     indexAxis: index,
                     scales: {
                         y: { display: false, beginAtZero: true, afterFit: function(axis) { axis.width = 0; } },
-                        x: { display: true, beginAtZero: true }
+                        x: { display: true, beginAtZero: true, }
                     },
                     plugins: { legend: { display: false } }
                 }

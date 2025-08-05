@@ -60,7 +60,7 @@
             const cvd8 = document.getElementById('chart-v-hkld').getContext('2d');
             const cvd9 = document.getElementById('chart-v-rpm').getContext('2d');
 
-            const lbl0 = document.getElementById('chart-time').getContext('2d');
+            const lbl0 = document.getElementById('chart-labels').getContext('2d');
 
             return [
                 ctd0, ctd1, ctd2, ctd3, ctd4, ctd5, ctd6, ctd7, ctd8, ctd9, 
@@ -109,6 +109,7 @@
             const rcd = await getRecords(tmp);
             const sdb = await getSidebarData(tmp);
             const crd = getChartContext(ctd, rcd);
+            // const plg = await setPredictionNotification();
 
             $(document).on('click', '.btn-view-data', async function() {
                 const sp = document.getElementById('view-data-spinner');
@@ -149,50 +150,13 @@
                 await setNewChartData(crd[7],  ndt[7]);
                 await setNewChartData(crd[8],  ndt[8]);
                 await setNewChartData(crd[9],  ndt[9]);
-                await setNewChartData(crd[20], ndt[10]);
+                await setNewChartData(crd[10], ndt[10]);
 
                 await getSidebarData(rnd);
             }, 1000);
 
             // setInterval(async () => { await setPredictionNotification(); }, 1.5 * 60 * 1000);
-
-            crd[20].options.scales.y = {
-                display: true,
-                beginAtZero: true,
-                grid: {
-                    drawBorder: false,
-                    display: false,
-                    color: '#242424',
-                    borderColor: '#242424',
-                },
-                border: {
-                    display: true,
-                    // color: '#242424',
-                },
-                afterFit: function(axis) {
-                    axis.width = 70;
-                }
-            };
-
-            crd[20].options.scales.x = {
-                display: true,
-                grid: {
-                    display: true,
-                    drawBorder: true,
-                    drawTicks: true,
-                    color: '#242424'
-                },
-                ticks: {
-                    display: true,
-                    color: '#242424',
-                },
-                border: {
-                    display: true,
-                    color: '#242424',
-                },
-                afterFit: function(axis) { axis.width = 0; }
-            };
-            crd[20].update();
+            // updateYAxisLabel(crd[10], true);
 
             const sml = window.matchMedia('(max-width: 576px)');
             updateYAxisLabel(crd[0], !sml.matches);
@@ -332,7 +296,7 @@
             fli.push(dat.fli); 
             flo.push(dat.flo); 
             sfm.push(dat.sfm);
-            lbl.push(0);
+            lbl.push(dat.lbl);
 
             noData = true;
 
@@ -388,15 +352,7 @@
 
             const a_lbl = {
                 'labels': tme,
-                'datasets': [{
-                    label: 'datatime', 
-                    data: lbl, 
-                    borderColor: 'rgba(0, 166, 89, 0)',
-                    pointBackgroundColor: 'rgba(0, 166, 89, 0)',
-                    pointBorderColor: 'rgba(0, 166, 89, 0)',
-                    fill: false,
-                    showLine: false
-                }],
+                'datasets': [ {label: 'lbl', data: lbl, hidden: false, borderColor: 'rgba(0, 166, 89, .75)'} ],
             };
 
            return [a_dph, a_btd, a_bvd, a_trq, a_rpi, a_wob, a_prs, a_rpm, a_hkl, a_bps, a_lbl];
@@ -503,7 +459,7 @@
                 'fli': Math.floor(Math.random() * 2000), 
                 'flo': Math.floor(Math.random() * 2000), 
                 'sfm': Math.floor(Math.random() * 2000),
-                'lbl': Math.floor(Math.random() * 2000),
+                'lbl': Math.floor(Math.random()),
             };
         }
 
@@ -937,7 +893,7 @@
                     indexAxis: index,
                     scales: {
                         y: { display: false, beginAtZero: true, afterFit: function(axis) { axis.width = 0; } },
-                        x: { display: true, beginAtZero: true }
+                        x: { display: true, beginAtZero: true, }
                     },
                     plugins: { legend: { display: false } }
                 }

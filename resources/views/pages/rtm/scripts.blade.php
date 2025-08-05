@@ -326,6 +326,34 @@
             const chd = trg.lastElementChild;
             trg.scrollTop = trg.scrollHeight;
 
+            document.querySelectorAll('.pill-rpm.danger:not([data-tippy-root])').forEach(el => {
+                tippy(el, {
+                content: 'hello world',
+                allowHTML: true,
+                });
+            });
+
+            document.querySelectorAll('.pill-stall.danger:not([data-tippy-root])').forEach(el => {
+                tippy(el, {
+                content: 'hello world',
+                allowHTML: true,
+                });
+            });
+
+            document.querySelectorAll('.pill-torq.danger:not([data-tippy-root])').forEach(el => {
+                tippy(el, {
+                content: 'hello world',
+                allowHTML: true,
+                });
+            });
+
+            document.querySelectorAll('.pill-circulation.danger:not([data-tippy-root])').forEach(el => {
+                tippy(el, {
+                content: 'hello world',
+                allowHTML: true,
+                });
+            });
+
         }
 
         async function getRecords(mil = 0) {
@@ -1005,23 +1033,23 @@
                     </div>
                 
                     <div class="notif-body">
-                        <div class="notif-pills ${rcs}">
+                        <div class="notif-pills pill-rpm ${rcs}">
                             <i class="ti ${ric}"></i>
                             <span class="notif-warning">${rdc}</span>
                         </div>
-                        <div class="notif-pills ${scs}">
+                        <div class="notif-pills pill-stall ${scs}">
                             <i class="ti ${sic}"></i>
                             <span class="notif-warning">${sdc}</span>
                         </div>
-                        <div class="notif-pills ${tcs}">
+                        <div class="notif-pills pill-torq ${tcs}">
                             <i class="ti ${tic}"></i>
                             <span class="notif-warning">${tdc}</span>
                         </div>
-                        <div class="notif-pills ${ccs}">
+                        <div class="notif-pills pill-cleanbit ${ccs}">
                             <i class="ti ${cic}"></i>
                             <span class="notif-warning">${cdc}</span>
                         </div>
-                        <div class="notif-pills ${ncs}">
+                        <div class="notif-pills pill-circulation ${ncs}">
                             <i class="ti ${nic}"></i>
                             <span class="notif-warning">${ndc}</span>
                         </div>

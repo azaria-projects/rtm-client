@@ -37,78 +37,156 @@
             });
         }
 
-        function getChartCanvas() {
-            const ctd0 = document.getElementById('chart-depth').getContext('2d');
-            const ctd1 = document.getElementById('chart-bitdepth').getContext('2d');
-            const ctd2 = document.getElementById('chart-bvdepth').getContext('2d');
-            const ctd3 = document.getElementById('chart-blockpos').getContext('2d');
-            const ctd4 = document.getElementById('chart-torque').getContext('2d');
-            const ctd5 = document.getElementById('chart-ropi').getContext('2d');
-            const ctd6 = document.getElementById('chart-wob').getContext('2d');
-            const ctd7 = document.getElementById('chart-stppress').getContext('2d');
-            const ctd8 = document.getElementById('chart-hkld').getContext('2d');
-            const ctd9 = document.getElementById('chart-rpm').getContext('2d');
-
-            const cvd0 = document.getElementById('chart-v-depth').getContext('2d');
-            const cvd1 = document.getElementById('chart-v-bitdepth').getContext('2d');
-            const cvd2 = document.getElementById('chart-v-bvdepth').getContext('2d');
-            const cvd3 = document.getElementById('chart-v-blockpos').getContext('2d');
-            const cvd4 = document.getElementById('chart-v-torque').getContext('2d');
-            const cvd5 = document.getElementById('chart-v-ropi').getContext('2d');
-            const cvd6 = document.getElementById('chart-v-wob').getContext('2d');
-            const cvd7 = document.getElementById('chart-v-stppress').getContext('2d');
-            const cvd8 = document.getElementById('chart-v-hkld').getContext('2d');
-            const cvd9 = document.getElementById('chart-v-rpm').getContext('2d');
-
-            const lbl0 = document.getElementById('chart-time').getContext('2d');
-
-            return [
-                ctd0, ctd1, ctd2, ctd3, ctd4, ctd5, ctd6, ctd7, ctd8, ctd9, 
-                cvd0, cvd1, cvd2, cvd3, cvd4, cvd5, cvd6, cvd7, cvd8, cvd9,
-                lbl0
-            ];
-        }
-
-        function getChartContext(ctd = [], rcd = []) {
-            const crd0 = new Chart(ctd[0], getChartConfig(rcd[0].labels, rcd[0].datasets)); // depth
-            const crd1 = new Chart(ctd[1], getChartConfig(rcd[1].labels, rcd[1].datasets)); // bitdepth
-            const crd2 = new Chart(ctd[2], getChartConfig(rcd[2].labels, rcd[2].datasets)); // bvdepth
-            const crd3 = new Chart(ctd[3], getChartConfig(rcd[3].labels, rcd[3].datasets)); // blockpos
-            const crd4 = new Chart(ctd[4], getChartConfig(rcd[4].labels, rcd[4].datasets)); // torque
-            const crd5 = new Chart(ctd[5], getChartConfig(rcd[5].labels, rcd[5].datasets)); // ropi
-            const crd6 = new Chart(ctd[6], getChartConfig(rcd[6].labels, rcd[6].datasets)); // wob
-            const crd7 = new Chart(ctd[7], getChartConfig(rcd[7].labels, rcd[7].datasets)); // stppress
-            const crd8 = new Chart(ctd[8], getChartConfig(rcd[8].labels, rcd[8].datasets)); // hkld
-            const crd9 = new Chart(ctd[9], getChartConfig(rcd[9].labels, rcd[9].datasets)); // rpm
-
-            const crv0 = new Chart(ctd[10], []);
-            const crv1 = new Chart(ctd[11], []);
-            const crv2 = new Chart(ctd[12], []);
-            const crv3 = new Chart(ctd[13], []);
-            const crv4 = new Chart(ctd[14], []);
-            const crv5 = new Chart(ctd[15], []);
-            const crv6 = new Chart(ctd[16], []);
-            const crv7 = new Chart(ctd[17], []);
-            const crv8 = new Chart(ctd[18], []);
-            const crv9 = new Chart(ctd[19], []);
-
-            const cbl0 = new Chart(ctd[20], getChartConfig(rcd[10].labels, rcd[10].datasets));
-
-            return [
-                crd0, crd1, crd2, crd3, crd4, crd5, crd6, crd7, crd8, crd9,
-                crv0, crv1, crv2, crv3, crv4, crv5, crv6, crv7, crv8, crv9,
-                cbl0
-            ];
-        }
-
         async function initVanilaCodes() {
             getCurrentDateTimeAlt();
 
-            const ctd = getChartCanvas();
+            const ct1 = document.getElementById('chart1').getContext('2d');
+            const ct2 = document.getElementById('chart2').getContext('2d');
+            const ct3 = document.getElementById('chart3').getContext('2d');
+
+            const ct4 = document.getElementById('chart4').getContext('2d');
+            const ct5 = document.getElementById('chart5').getContext('2d');
+            const ct6 = document.getElementById('chart6').getContext('2d');
+
             const tmp = await getRandomData();
             const rcd = await getRecords(tmp);
             const sdb = await getSidebarData(tmp);
-            const crd = getChartContext(ctd, rcd);
+            const plg = await setPredictionNotification();
+
+            const cr1 = new Chart(ct1, getChartConfig(rcd[0].labels, rcd[0].datasets));
+            const cr2 = new Chart(ct2, getChartConfig(rcd[1].labels, rcd[1].datasets));
+            const cr3 = new Chart(ct3, getChartConfig(rcd[2].labels, rcd[2].datasets));
+
+            const cr4 = new Chart(ct4, getChartConfig([], []));
+            const cr5 = new Chart(ct5, getChartConfig([], []));
+            const cr6 = new Chart(ct6, getChartConfig([], []));
+
+            document.querySelectorAll('.chart-filter-1').forEach(cf => {
+                cf.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    const ix = cr1.data.datasets.findIndex(ds => ds.label === lb);
+
+                    if (ix !== -1) {
+                        if (cr1.getDatasetMeta(ix).hidden == true) {
+                            cr1.getDatasetMeta(ix).hidden = false;
+                        } else {
+                            cr1.getDatasetMeta(ix).hidden = true;
+                        }
+                        
+                        cr1.update();
+                    }
+                });
+            });
+
+            document.querySelectorAll('.chart-filter-2').forEach(cf => {
+                cf.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    const ix = cr2.data.datasets.findIndex(ds => ds.label === lb);
+
+                    if (ix !== -1) {
+                        if (cr2.getDatasetMeta(ix).hidden == true) {
+                            cr2.getDatasetMeta(ix).hidden = false;
+                        } else {
+                            cr2.getDatasetMeta(ix).hidden = true;
+                        }
+                        
+                        cr2.update();
+                    }
+                });
+            });
+
+            document.querySelectorAll('.chart-filter-3').forEach(cf => {
+                cf.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    const ix = cr3.data.datasets.findIndex(ds => ds.label === lb);
+
+                    if (ix !== -1) {
+                        if (cr3.getDatasetMeta(ix).hidden == true) {
+                            cr3.getDatasetMeta(ix).hidden = false;
+                        } else {
+                            cr3.getDatasetMeta(ix).hidden = true;
+                        }
+                        
+                        cr3.update();
+                    }
+
+                    document.getElementById('reset-click').click()
+                });
+            });
+
+            document.querySelectorAll('.chart-filter-4').forEach(cf => {
+                cf.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    const ix = cr4.data.datasets.findIndex(ds => ds.label === lb);
+
+                    if (ix !== -1) {
+                        if (cr4.getDatasetMeta(ix).hidden == true) {
+                            cr4.getDatasetMeta(ix).hidden = false;
+                        } else {
+                            cr4.getDatasetMeta(ix).hidden = true;
+                        }
+                        
+                        cr4.update();
+                    }
+
+                    document.getElementById('reset-click').click()
+                });
+            });
+
+            document.querySelectorAll('.chart-filter-5').forEach(cf => {
+                cf.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    const ix = cr5.data.datasets.findIndex(ds => ds.label === lb);
+
+                    if (ix !== -1) {
+                        if (cr5.getDatasetMeta(ix).hidden == true) {
+                            cr5.getDatasetMeta(ix).hidden = false;
+                        } else {
+                            cr5.getDatasetMeta(ix).hidden = true;
+                        }
+                        
+                        cr5.update();
+                    }
+
+                    document.getElementById('reset-click').click()
+                });
+            });
+
+            document.querySelectorAll('.chart-filter-6').forEach(cf => {
+                cf.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    const ix = cr6.data.datasets.findIndex(ds => ds.label === lb);
+
+                    if (ix !== -1) {
+                        if (cr6.getDatasetMeta(ix).hidden == true) {
+                            cr6.getDatasetMeta(ix).hidden = false;
+                        } else {
+                            cr6.getDatasetMeta(ix).hidden = true;
+                        }
+                        
+                        cr6.update();
+                    }
+
+                    document.getElementById('reset-click').click()
+                });
+            });
+
+            document.querySelectorAll('.icon-filter').forEach(ic => {
+                if (ic.classList.contains('pills')) {
+                    return;
+                }
+
+                ic.addEventListener('click', function() {
+                    const lb = this.getAttribute('data-chart');
+                    if (lb !== undefined || lb !== null) {
+                        if (this.classList.contains('disabled')) {
+                            this.classList.remove('disabled');
+                        } else {
+                            this.classList.add('disabled')
+                        }
+                    }
+                });
+            });
 
             $(document).on('click', '.btn-view-data', async function() {
                 const sp = document.getElementById('view-data-spinner');
@@ -139,85 +217,14 @@
                 const rnd = await getRandomData();
                 const ndt = await getRecords(rnd);
 
-                await setNewChartData(crd[0],  ndt[0]);
-                await setNewChartData(crd[1],  ndt[1]);
-                await setNewChartData(crd[2],  ndt[2]);
-                await setNewChartData(crd[3],  ndt[3]);
-                await setNewChartData(crd[4],  ndt[4]);
-                await setNewChartData(crd[5],  ndt[5]);
-                await setNewChartData(crd[6],  ndt[6]);
-                await setNewChartData(crd[7],  ndt[7]);
-                await setNewChartData(crd[8],  ndt[8]);
-                await setNewChartData(crd[9],  ndt[9]);
-                await setNewChartData(crd[20], ndt[10]);
+                await setNewChartData(cr1, ndt[0]);
+                await setNewChartData(cr2, ndt[1]);
+                await setNewChartData(cr3, ndt[2]);
 
                 await getSidebarData(rnd);
             }, 1000);
 
-            // setInterval(async () => { await setPredictionNotification(); }, 1.5 * 60 * 1000);
-
-            crd[20].options.scales.y = {
-                display: true,
-                beginAtZero: true,
-                grid: {
-                    drawBorder: false,
-                    display: false,
-                    color: '#242424',
-                    borderColor: '#242424',
-                },
-                border: {
-                    display: true,
-                    // color: '#242424',
-                },
-                afterFit: function(axis) {
-                    axis.width = 70;
-                }
-            };
-
-            crd[20].options.scales.x = {
-                display: true,
-                grid: {
-                    display: true,
-                    drawBorder: true,
-                    drawTicks: true,
-                    color: '#242424'
-                },
-                ticks: {
-                    display: true,
-                    color: '#242424',
-                },
-                border: {
-                    display: true,
-                    color: '#242424',
-                },
-                afterFit: function(axis) { axis.width = 0; }
-            };
-            crd[20].update();
-
-            const sml = window.matchMedia('(max-width: 576px)');
-            updateYAxisLabel(crd[0], !sml.matches);
-            updateYAxisLabel(crd[1], !sml.matches);
-            updateYAxisLabel(crd[2], !sml.matches);
-            updateYAxisLabel(crd[3], !sml.matches);
-            updateYAxisLabel(crd[4], !sml.matches);
-            updateYAxisLabel(crd[5], !sml.matches);
-            updateYAxisLabel(crd[6], !sml.matches);
-            updateYAxisLabel(crd[7], !sml.matches);
-            updateYAxisLabel(crd[8], !sml.matches);
-            updateYAxisLabel(crd[9], !sml.matches);
-
-            sml.addEventListener('change', (e) => {
-                updateYAxisLabel(crd[0], !e.matches);
-                updateYAxisLabel(crd[1], !e.matches);
-                updateYAxisLabel(crd[2], !e.matches);
-                updateYAxisLabel(crd[3], !e.matches);
-                updateYAxisLabel(crd[4], !e.matches);
-                updateYAxisLabel(crd[5], !e.matches);
-                updateYAxisLabel(crd[6], !e.matches);
-                updateYAxisLabel(crd[7], !e.matches);
-                updateYAxisLabel(crd[8], !e.matches);
-                updateYAxisLabel(crd[9], !e.matches);
-            });
+            setInterval(async () => { await setPredictionNotification(); }, 1.5 * 60 * 1000);
         }
 
         async function fetchRecords(rng) {
@@ -316,8 +323,6 @@
             const sfm = [], fli = [], flo = [];
             const cur = new Date().toTimeString().slice(0, 8);
 
-            const lbl = [];
-
             tme.push(cur);
             dph.push(dat.dph); 
             btd.push(dat.btd); 
@@ -332,74 +337,38 @@
             fli.push(dat.fli); 
             flo.push(dat.flo); 
             sfm.push(dat.sfm);
-            lbl.push(0);
 
             noData = true;
 
-            const a_dph = {
+            const cc1 = {
                 'labels': tme,
-                'datasets': [ {label: 'depth', data: dph, borderColor: 'rgba(195, 112, 155, 0.8)'} ],
+                'datasets': [
+                    {label: 'depth', data: dph, borderColor: 'rgba(0, 166, 113, .75)'},
+                    {label: 'bit-depth', data: bvd, borderColor: 'rgba(0, 97, 166, .75)'},
+                    {label: 'bv-depth', data: btd, borderColor: 'rgba(166, 161, 0, .75)'}
+                ],
             };
 
-            const a_btd = {
+            const cc2 = {
                 'labels': tme,
-                'datasets': [ {label: 'bit-depth', data: btd, borderColor: 'rgba(0, 97, 166, .75)'} ],
+                'datasets': [
+                    {label: 'torque', data: trq, borderColor: 'rgba(166, 0, 86, .75)'},
+                    {label: 'ropi', data: rpi, borderColor: 'rgba(0, 97, 166, .75)'},
+                    {label: 'wob', data: wob, borderColor: 'rgba(105, 0, 166, .75)'}
+                ],
             };
 
-            const a_bvd = {
+            const cc3 = {
                 'labels': tme,
-                'datasets': [ {label: 'bv-depth', data: bvd, borderColor: 'rgba(166, 161, 0, .75)'} ],
+                'datasets': [
+                    {label: 'stppress', data: prs, borderColor: 'rgba(166, 0, 136, .75)'},
+                    {label: 'rpm', data: rpm, borderColor: 'rgba(0, 97, 166, .75)'},
+                    {label: 'hkld', data: hkl, borderColor: 'rgba(0, 166, 158, .75)'},
+                    {label: 'block-pos', data: bps, borderColor: 'rgba(0, 166, 89, .75)'}
+                ],
             };
 
-            const a_trq = {
-                'labels': tme,
-                'datasets': [ {label: 'torque', data: trq, borderColor: 'rgba(166, 0, 86, .75)'} ],
-            };
-
-            const a_rpi = {
-                'labels': tme,
-                'datasets': [ {label: 'ropi', data: rpi, borderColor: 'rgba(0, 97, 166, .75)'} ],
-            };
-
-            const a_wob = {
-                'labels': tme,
-                'datasets': [ {label: 'wob', data: wob, borderColor: 'rgba(105, 0, 166, .75)'} ],
-            };
-
-            const a_prs = {
-                'labels': tme,
-                'datasets': [ {label: 'stppress', data: prs, borderColor: 'rgba(166, 0, 136, .75)'} ],
-            };
-
-            const a_rpm = {
-                'labels': tme,
-                'datasets': [ {label: 'rpm', data: rpm, borderColor: 'rgba(0, 97, 166, .75)'} ],
-            };
-
-            const a_hkl = {
-                'labels': tme,
-                'datasets': [ {label: 'hkld', data: hkl, borderColor: 'rgba(0, 166, 158, .75)'} ],
-            };
-
-            const a_bps = {
-                'labels': tme,
-                'datasets': [ {label: 'block-pos', data: bps, borderColor: 'rgba(0, 166, 89, .75)'} ],
-            };
-
-            const a_lbl = {
-                'labels': tme,
-                'datasets': [{
-                    label: 'datatime', 
-                    data: lbl, 
-                    borderColor: 'rgba(0, 166, 89, 0)',
-                    pointBackgroundColor: 'rgba(0, 166, 89, 0)',
-                    pointBorderColor: 'rgba(0, 166, 89, 0)',
-                    fill: false,
-                    showLine: false
-                }],
-            };
-
-           return [a_dph, a_btd, a_bvd, a_trq, a_rpi, a_wob, a_prs, a_rpm, a_hkl, a_bps, a_lbl];
+           return [cc1, cc2, cc3];
         }
 
         async function getSpecificRecords(start, end) {
@@ -502,20 +471,8 @@
                 'bps': Math.floor(Math.random() * 50),
                 'fli': Math.floor(Math.random() * 2000), 
                 'flo': Math.floor(Math.random() * 2000), 
-                'sfm': Math.floor(Math.random() * 2000),
-                'lbl': Math.floor(Math.random() * 2000),
+                'sfm': Math.floor(Math.random() * 2000)
             };
-        }
-
-        function updateYAxisLabel(crt = Chart(), sts = false) {
-            crt.options.scales.y = {
-                display: true,
-                beginAtZero: true,
-                afterFit: function(axis) {
-                    axis.width = !sts ? 70 : 0;
-                }
-            };
-            crt.update();
         }
 
         function getPredictionTable() {
@@ -936,8 +893,8 @@
                     maintainAspectRatio: false,
                     indexAxis: index,
                     scales: {
-                        y: { display: false, beginAtZero: true, afterFit: function(axis) { axis.width = 0; } },
-                        x: { display: true, beginAtZero: true }
+                        y: { display: true, beginAtZero: true, afterFit: function(axis) { axis.width = 100; } },
+                        x: { display: true, beginAtZero: true, }
                     },
                     plugins: { legend: { display: false } }
                 }
