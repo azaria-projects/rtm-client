@@ -23,10 +23,10 @@
         
             <div class="tab-content" id="tab-content"> 
                 <div class="tab-pane fade show active" id="data-monitoring" role="tabpanel" aria-labelledby="tab-monitoring">
-                    @include('pages.rtm.monitoring')
+                    @include('pages.rtm.monitoring-test')
                 </div>
                 <div class="tab-pane fade" id="data-histories" role="tabpanel" aria-labelledby="tab-histories">
-                    @include('pages.rtm.history')
+                    @include('pages.rtm.history-test')
                 </div>
             </div>
         </div>
