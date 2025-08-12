@@ -26,7 +26,7 @@
 
                 @include('components.aside-items', [
                     'ic' => 'ti-blocks',
-                    'nm' => 'Block Pos.',
+                    'nm' => 'Block Pos',
                     'mt' => 'm',
                 ])
 
@@ -63,7 +63,7 @@
 
                 @include('components.aside-items', [
                     'ic' => 'ti-texture',
-                    'nm' => 'STPRESS',
+                    'nm' => 'STPPRESS',
                     'mt' => 'psi',
                 ])
                 
@@ -86,18 +86,6 @@
                     'nm' => 'SCFM',
                     'mt' => 'f3/m',
                 ])
-
-                {{-- <li class="nav-header mt-auto">System</li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <div class="row well-params w-100">
-                            <div class="col-12 param-data" style="background-color: transparent;">
-                                <i class="nav-icon ti ti-power"></i>
-                                <p class="data-title">LOGOUT</p>
-                            </div>
-                        </div>
-                    </a>
-                </li> --}}
             </ul>
         </nav>
     </div>

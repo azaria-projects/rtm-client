@@ -23,8 +23,9 @@ class HomeController extends Controller
         $str = $wll['start_date'];
         $end = $wll['end_date'];
         $typ = $this->getWellType((int) $wll['is_api_token']);
+        $chr = array('depth', 'bitdepth', 'bvdepth', 'blockpos', 'torque', 'ropi', 'wob', 'stppress', 'hkld', 'rpm');
 
-        return view('pages.rtm.index', compact('sat', 'zon', 'nme', 'tkn', 'com', 'str', 'end', 'typ'));
+        return view('pages.rtm.index', compact('sat', 'zon', 'nme', 'tkn', 'com', 'str', 'end', 'typ', 'chr'));
     }
 
     public function test()
@@ -37,8 +38,9 @@ class HomeController extends Controller
         $str = '';
         $end = '';
         $typ = 'Geothermal';
+        $chr = array('depth', 'bitdepth', 'bvdepth', 'blockpos', 'torque', 'ropi', 'wob', 'stppress', 'hkld', 'rpm');
 
-        return view('pages.rtm.test', compact('sat', 'zon', 'nme', 'tkn', 'com', 'str', 'end', 'typ'));
+        return view('pages.test.index', compact('sat', 'zon', 'nme', 'tkn', 'com', 'str', 'end', 'typ', 'chr'));
     }
 
     public function select()

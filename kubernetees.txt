@@ -1,0 +1,44 @@
+-- deploying using kubernetees
+
+- main server
+1. install K3s > curl -sfL https://get.k3s.io | sh -
+2. copy K3s token > sudo cat /var/lib/rancher/k3s/server/node-token
+3. configure the node server K3s
+4. deploy > kubectl apply -f deployment.yaml.
+
+- node server 
+1. install K3s > curl -sfL https://get.k3s.io | K3S_URL=https://<MAIN_SERVER_IP>:6443 K3S_TOKEN=<TOKEN> sh -
+2. create token for private repo > kubectl create secret docker-registry ghcr-secret \
+  --docker-server=ghcr.io \
+  --docker-username=GITHUB_USERNAME \
+  --docker-password=YOUR_GITHUB_PAT \
+  --docker-email=your@email.com
+
+- commands
+1. check running nodes > kubectl get nodes
+
+
+yamml example:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container-name
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: container-name
+  template:
+    metadata:
+      labels:
+        app: container-name
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: container-name
+          image: ghcr.io/OWNER/REPO:latest
+          ports:
+            - containerPort: 8000
+
+

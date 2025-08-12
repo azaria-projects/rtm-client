@@ -26,6 +26,8 @@
         </main> --}}
 
         <main class="app-main">
+            @include('components.loading')
+            
             @yield('content')
         </main>
 

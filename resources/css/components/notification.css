@@ -3,6 +3,8 @@
     max-height: 100%;
     scroll-behavior: smooth !important;
 
+    border-radius: 0px;
+
     .card-body {
         display: flex;
         flex-direction: column;
@@ -76,7 +78,7 @@
                     gap: 6px;
         
                     .notif-pills {
-                        display: flex;
+                        display: none !important;
                         gap: 6px;
                         align-items: center;
         
@@ -98,6 +100,7 @@
                     }
         
                     .notif-pills.danger {
+                        display: flex !important;
                         background-color: #A31D1F;
                         border: 2px solid #FF3F42;
                         cursor: pointer;
@@ -124,6 +127,11 @@
         }
     }
 
+}
+
+.prediction-notif {
+    background-color: #242424;
+    width: 250px;
 }
 
 @media (max-width: 576px) {

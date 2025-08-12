@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@include('pages.rtm.scripts')
+@include('pages.test.scripts')
 
 @section('content')
 

@@ -44,7 +44,7 @@
                         <i class="ti ti-layout-sidebar-right-expand"></i>
                     </div>
 
-                    <div class="btn-home only-icon-filter active" style="cursor: pointer; text-decoration: none;">
+                    <div class="btn-notification only-icon-filter active" style="cursor: pointer; text-decoration: none;">
                         <i class="ti ti-bell-ringing"></i>
                     </div>
 

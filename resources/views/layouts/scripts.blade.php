@@ -10,6 +10,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const cover = document.getElementById('loading-cover');
+            const notif = document.getElementById('notification-sidebar');
+
             document.querySelectorAll('.btn-logout').forEach(button => {
                 button.addEventListener('click', function() {
                     swal.fire(
@@ -36,6 +39,29 @@
                     });
                 });
             });
+
+            document.querySelectorAll('.btn-home').forEach(button => {
+                button.addEventListener('click', function() {
+                    swal.fire(
+                        getSwalConfPrompt('question', 'CHANGE WELL ?', 'You will be redirected to selecting well page. Do you want to change well?')
+                    ).then((result) => {
+                        if (result.value) {
+                            window.location.href = "{{ route('rtm.select') }}";
+                            return;
+                        }
+                    });
+                });
+            });
+
+            document.querySelectorAll('.btn-notification').forEach(button => {
+                button.addEventListener('click', function() {
+                    notif.classList.toggle('open');
+                });
+            });
+
+            if (cover) { 
+                cover.remove() 
+            }
         });
     </script>
 @endpush

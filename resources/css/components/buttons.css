@@ -179,8 +179,8 @@
 
 .icon-filter-group {
     [data-chart="depth"] {
-        border-color: #00A671;
-        background-color: #00A671;
+        border-color: rgba(0, 166, 113, .75);
+        background-color: rgba(0, 166, 113, .75);
     }
 
     [data-chart="bv-depth"] {
@@ -194,48 +194,63 @@
     }
 
     [data-chart="block-pos"] {
-        border-color: #00A659;
-        background-color: #00A659;
+        border-color: rgba(195, 112, 155, 0.8);
+        background-color: rgba(195, 112, 155, 0.8);
     }
 
     [data-chart="stppress"] {
-        border-color: #A60088;
-        background-color: #A60088;
+        border-color: rgba(166, 0, 136, .75);
+        background-color: rgba(166, 0, 136, .75);
     }
 
     [data-chart="torque"] {
-        border-color: #A60056;
-        background-color: #A60056;
+        border-color: rgba(166, 0, 86, .75);
+        background-color: rgba(166, 0, 86, .75);
     }
 
     [data-chart="wob"] {
-        border-color: #9000A6;
-        background-color: #9000A6;
+        border-color: rgba(105, 0, 166, .75);
+        background-color: rgba(105, 0, 166, .75);
     }
 
     [data-chart="ropi"] {
-        border-color: #0061A6;
-        background-color: #0061A6;
+        border-color: rgba(0, 97, 166, .75);
+        background-color: rgba(0, 97, 166, .75);
     }
 
     [data-chart="rpm"] {
-        border-color: #0061A6;
-        background-color: #0061A6;
+        border-color: rgba(0, 97, 166, .75);
+        background-color: rgba(0, 97, 166, .75);
     }
 
     [data-chart="hkld"] {
-        border-color: #00A69E;
-        background-color: #00A69E;
+        border-color: rgba(0, 166, 158, .75);
+        background-color: rgba(0, 166, 158, .75);
     }
 
     [data-chart="mudflowin"] {
-        border-color: #0061A6;
-        background-color: #0061A6;
+        border-color: rgba(166, 0, 136, .75);
+        background-color: rgba(166, 0, 136, .75);
     }
 
     [data-chart="mudflowout"] {
-        border-color: #A60056;
-        background-color: #A60056;
+        border-color: rgba(166, 0, 136, .75);
+        background-color: rgba(166, 0, 136, .75);
+    }
+
+    [data-chart="bvdepth"] {
+        border-color: rgba(0, 166, 158, .75);
+        background-color: rgba(0, 166, 158, .75);
+    }
+
+    [data-chart="bitdepth"] {
+        border-color: rgba(166, 161, 0, .75);
+        background-color: rgba(166, 161, 0, .75);
+    }
+
+    [data-chart="scfm"] {
+        border-color: rgba(0, 97, 166, .75);
+        background-color: rgba(0, 97, 166, .75);
     }
 
     .disabled {
@@ -253,14 +268,15 @@
 
     .icon-filter-group {
         [data-chart="depth"]:hover,
-        [data-chart="bv-depth"]:hover,
-        [data-chart="bit-depth"]:hover,
+        [data-chart="bvdepth"]:hover,
+        [data-chart="bitdepth"]:hover,
         [data-chart="block-pos"]:hover,
         [data-chart="stppress"]:hover,
         [data-chart="torque"]:hover,
         [data-chart="wob"]:hover,
         [data-chart="ropi"]:hover,
         [data-chart="rpm"]:hover,
+        [data-chart="hkld"]:hover,
         [data-chart="hkld"]:hover,
         [data-chart="mudflowin"]:hover,
         [data-chart="mudflowout"]:hover {
