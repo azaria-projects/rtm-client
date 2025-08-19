@@ -390,6 +390,26 @@ body {
     background: transparent;
 }
 
+#main-charts,
+#prediction-charts {
+    overflow-x: auto;
+    overflow-y: hidden !important;
+    white-space: nowrap;
+}
+
+#main-charts::-webkit-scrollbar,
+#prediction-charts::-webkit-scrollbar { 
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#main-charts::-webkit-scrollbar-thumb,
+#prediction-charts::-webkit-scrollbar-thumb {
+    background-color: #1C1C1C;
+    border-radius: 4px;
+}
+
 .user-menu {
     ul.dropdown-menu {
         border-radius: 10px !important;

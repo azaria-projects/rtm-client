@@ -104,7 +104,12 @@
         const bse = `${baseurl}/${baseprefix}/log`;
         const url = `${bse}?${par}`;
         const res = await get(url).then(data => data).catch(error => error);
-        return res.response.data;
+
+        if (res) {
+            return res.response.data;
+        }
+
+        return [];
     }
 
     StuckPrediction.prototype.getNotification = async function () {
@@ -123,7 +128,7 @@
                 request[0].date.split('+')[0].split('.')[0]
             );
         } else {
-            components = getNotificationComponent(false, true, false, false, true, true, 'no data');
+            components = this.getNotificationComponents(false, true, false, false, true, true, 'NO DATA');
         }
 
         if (container.children.length >= 10) {
@@ -138,6 +143,6 @@
 
     StuckPrediction.prototype.initNotification = async function () {
         await this.getNotification();
-        setInterval(async () => { this.getNotification() }, 1.5 * 60 * 1000);
+        setInterval(async () => { await this.getNotification() }, 1.5 * 60 * 1000);
     }    
 </script>

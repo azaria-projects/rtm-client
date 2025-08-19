@@ -8,7 +8,7 @@
     </div>
 
     <div class="card-body h-100">
-        <div class="row flex-nowrap overflow-auto m-0 p-0 w-100" style="height: 805px;">
+        <div id="prediction-charts" class="row flex-nowrap overflow-auto m-0 p-0 w-100" style="height: 805px;">
             @foreach ($chr as $chartName)
                 <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-2 m-0 p-0 h-100">
                     <div class="chart-container m-0 p-0" style="height: 800px;">

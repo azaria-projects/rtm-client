@@ -1,6 +1,6 @@
 @push('scripts-body')
     {{-- independent scripts --}}
-    @include('scripts.sidebar')
+    @include('scripts.rtm.sidebar')
     @include('scripts.rtm.charts')
     @include('scripts.rtm.prediction')
 

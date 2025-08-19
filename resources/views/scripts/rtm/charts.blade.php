@@ -1,9 +1,10 @@
 <script>
-    function ChartSensors(ranges = 5000, scales = 900000) {
+    function ChartSensors(ranges = 15 * 60 * 1000, scales = 5000, interval = 6000) {
         this.records  = []; 
         this.ranges   = ranges;
         this.scales   = scales;
         this.isNoData = false;
+        this.interval = interval;
 
         this.depth    = document.getElementById('chart-depth').getContext('2d');
         this.bitdepth = document.getElementById('chart-bitdepth').getContext('2d');
@@ -374,6 +375,27 @@
     }
 
     ChartSensors.prototype.setNewChartData1 = async function (chart, newData) {
+        // const filteredLabels = [];
+        // const filteredDataPerDataset = newData.datasets.map(() => []);
+        // const seenIntervalBlocks = new Set();
+
+        // newData.labels.forEach((label, idx) => {
+        //     const [hours, minutes, seconds] = label.split(':').map(Number);
+        //     const totalSeconds  = hours * 3600 + minutes * 60 + seconds;
+        //     const intervalBlock = Math.floor(totalSeconds / (this.scales/1000));
+
+        //     console.log([hours, minutes, seconds])
+
+        //     if (!seenIntervalBlocks.has(intervalBlock)) {
+        //         seenIntervalBlocks.add(intervalBlock);
+        //         filteredLabels.push(label);
+
+        //         newData.datasets.forEach((dataset, i) => {
+        //             filteredDataPerDataset[i].push(dataset.data[idx]);
+        //         });
+        //     }
+        // });
+
         chart.data.labels.push(...newData.labels);
         chart.data.datasets.forEach((dataset, i) => {
             console.log('does not executed here');
@@ -407,7 +429,7 @@
     }
 
     ChartSensors.prototype.setNewChartUpdate = async function () {
-        await this.getChartRecords(60000);
+        await this.getChartRecords(this.scales);
         await Promise.all([
             this.setNewChartData(this.chartWob, this.records['wob']),
             this.setNewChartData(this.chartRpm, this.records['rpm']),
@@ -437,10 +459,37 @@
         await this.setNewChartData1(this.chartVstppress, records['stppress']);
     }
 
+    ChartSensors.prototype.clearCanvas = function () {
+        clearInterval(this.interval);
+        this.interval = null;
+
+        this.chartWob.destroy();
+        this.chartRpm.destroy();
+        this.chartRopi.destroy();
+        this.chartDepth.destroy();
+        this.chartTorque.destroy();
+        this.chartHkld.destroy();
+        this.chartBvdepth.destroy();
+        this.chartBitdepth.destroy();
+        this.chartBlockpos.destroy();
+        this.chartStppress.destroy();
+
+        this.chartVdepth.destroy();
+        this.chartVwob.destroy();
+        this.chartVrpm.destroy();
+        this.chartVhkld.destroy();
+        this.chartVropi.destroy();
+        this.chartVtorque.destroy();
+        this.chartVbvdepth.destroy();
+        this.chartVbitdepth.destroy();
+        this.chartVblockpos.destroy();
+        this.chartVstppress.destroy();
+    }
+
     ChartSensors.prototype.initCharts = async function () {
-        await this.getChartRecords();
+        await this.getChartRecords(this.ranges);
         await this.setCharts();
 
-        setInterval(async () => { this.setNewChartUpdate() }, 6000);
+        this.interval = setInterval(async () => { await this.setNewChartUpdate() }, this.interval);
     }
 </script>

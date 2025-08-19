@@ -28,12 +28,12 @@
             placeholder: 'select range',
             allowClear: true,
             data: [
-                {id: '3600000', text: '1 Hour'},
-                {id: '7200000', text: '2 Hours'},
-                {id: '10800000', text: '3 Hours'},
-                {id: '21600000', text: '6 Hours'},
-                {id: '43200000', text: '12 Hours'},
-                {id: '86400000', text: '24 Hours'},
+                {id: '60', text: '1 Hour'},
+                {id: '120', text: '2 Hours'},
+                {id: '180', text: '3 Hours'},
+                {id: '360', text: '6 Hours'},
+                {id: '720', text: '12 Hours'},
+                {id: '1440', text: '24 Hours'},
             ],
         });
 
@@ -41,14 +41,39 @@
             placeholder: 'select scale',
             allowClear: true,
             data: [
-                {id: '300000', text: '5 Minutes'},
-                {id: '600000', text: '10 Minutes'},
-                {id: '900000', text: '15 Minutes'},
-                {id: '1800000', text: '30 Minutes'},
-                {id: '3600000', text: '1 Hour'},
-                {id: '7200000', text: '2 Hour'},
-                {id: '10800000', text: '3 Hour'},
+                {id: '5', text: '5 Minutes'},
+                {id: '10', text: '10 Minutes'},
+                {id: '15', text: '15 Minutes'},
+                {id: '30', text: '30 Minutes'},
+                {id: '60', text: '1 Hour'},
+                {id: '120', text: '2 Hour'},
+                {id: '180', text: '3 Hour'},
             ],
+        });
+
+        $(document).on('change', '#filter-scales', async function() {
+            Charts.scales = $(this).val();
+        });
+
+        $(document).on('change', '#filter-range', async function() {
+            Charts.ranges = $(this).val();
+        });
+
+        $(document).on('click', '#btn-filter', async function() {
+            const range = parseInt(Charts.ranges) * 60000;
+            const scale = parseInt(Charts.scales) * 60000;
+
+            if (scale > range) {
+                swal.fire(
+                    getSwalConf('warning', 'Incorrect Combination!', 'Scale should not be larger than the ranges!')
+                );
+
+                return;
+            }
+
+            Charts.clearCanvas();
+            Charts = new ChartSensors(range, scale, range);
+            await Charts.initCharts();
         });
 
         $(document).on('click', '.btn-view-data', async function() {

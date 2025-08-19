@@ -22,7 +22,15 @@
                     <label for="filter-scales" class="form-label"><i class="ti ti-ruler-2 me-1"></i> Scale Intervals </label>
                     <select id="filter-scales" class="form-select select2" aria-label="filter-scale"></select>  
                     <small class="text-help">* adjust the data scale for each data point</small>
-                    
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="btn-group-horizontal gap-2" role="group" style="width: fit-content;">
+                    <button id="btn-filter" type="button" class="btn btn-primary d-flex align-items-center gap-2 mx-0 mt-2"> 
+                        <i class="ti ti-brand-apple-arcade" style="font-size: 1.2rem;"></i>
+                        Apply
+                    </button>
                 </div>
             </div>
         </div>
