@@ -44,7 +44,6 @@ RUN apt-get update && apt-get install -y \
     libpng16-16 \
     libjpeg62-turbo \
     libfreetype6 \
-    libzip4 \
     ca-certificates \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
