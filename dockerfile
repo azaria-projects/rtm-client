@@ -52,4 +52,5 @@ COPY --from=build /app /app
 WORKDIR /app
 
 EXPOSE 8101
+
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8101"]
