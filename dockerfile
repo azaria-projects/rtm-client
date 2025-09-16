@@ -52,5 +52,5 @@ RUN apt-get update && apt-get install -y \
 COPY --from=build /app /app
 WORKDIR /app
 
-EXPOSE 8000
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+EXPOSE 8101
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8101"]
