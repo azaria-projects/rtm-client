@@ -60,11 +60,15 @@
             const prediction = $(this).data('prediction-dt').split('.')[0];
             const startData  = $(this).data('record-start');
             const endData    = $(this).data('record-end');
-            const records    = await Charts.setNewPredictionChartData({'start': startData, 'end': endData});
-            
+            const records    = await Charts.setNewRandomHistoryData();
+
             if (!spinner.classList.contains('d-none')) {
                 spinner.classList.add('d-none');
             }
+        });
+
+        $(document).on('click', '.btn-filter', async function() {
+
         });
         
         $('#filter-range').val(null).trigger('change');
@@ -73,5 +77,7 @@
         await Charts.initCharts();
         await TablePrediction.initTable();
         await PredictionNotif.initNotification();
+
+        document.getElementById('prediction-charts').classList.add('d-none');
     });
 </script>

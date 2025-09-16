@@ -1,6 +1,7 @@
 <script>
     function ChartSensors(ranges = 5000, scales = 900000) {
-        this.records  = []; 
+        this.records  = [];
+        this.vrecords = []; 
         this.ranges   = ranges;
         this.scales   = scales;
         this.isNoData = false;
@@ -254,6 +255,96 @@
         }
     }
 
+    ChartSensors.prototype.getNChartRecords = function (milisecond = 15 * 60 * 1000) {
+        this.isNoData = true;
+
+        const time     = [], depth      = [], bitdepth = [], bvdepth   = [];
+        const torque   = [], ropi       = [], wob      = [], stppress  = [];
+        const hookload = [], blockpos   = [], scfm     = [], mudflowin = [];
+        const rpm      = [], mudflowout = [];
+
+        const totalPoints = Math.floor(milisecond / 1000);
+        const startTime = new Date();
+
+        for (let i = 0; i < totalPoints; i++) {
+            const currentTime = new Date(startTime.getTime() + i * 1000);
+
+            const record = {
+                time: currentTime.toTimeString().slice(0, 8),
+                md: Math.floor(Math.random() * 2000),
+                bitdepth: Math.floor(Math.random() * 2000),
+                deptbitv: Math.floor(Math.random() * 2000),
+                torqa: Math.floor(Math.random() * 50),
+                ropi: Math.floor(Math.random() * 200),
+                woba: Math.floor(Math.random() * 200),
+                stppress: Math.floor(Math.random() * 5000),
+                rpm: Math.floor(Math.random() * 200),
+                hklda: Math.floor(Math.random() * 500),
+                blockpos: Math.floor(Math.random() * 100),
+                mudflowin: Math.floor(Math.random() * 3000),
+                mudflowout: Math.floor(Math.random() * 3000),
+                scfm: Math.floor(Math.random() * 4000),
+            };
+
+            time.push(record.time);
+            rpm.push(record.rpm);
+            wob.push(record.woba);
+            depth.push(record.md);
+            ropi.push(record.ropi);
+            scfm.push(record.scfm);
+            torque.push(record.torqa);
+            hookload.push(record.hklda);
+            bvdepth.push(record.deptbitv);
+            bitdepth.push(record.bitdepth);
+            stppress.push(record.stppress);
+            blockpos.push(record.blockpos);
+            mudflowin.push(record.mudflowin);
+            mudflowout.push(record.mudflowout);
+        }
+
+        this.vrecords = {
+            'wob': this.getChartRecordFormat(time, {
+                label: 'wob', data: wob, borderColor: 'rgba(105, 0, 166, .75)'
+            }),
+            'rpm': this.getChartRecordFormat(time, {
+                label: 'rpm', data: rpm, borderColor: 'rgba(0, 97, 166, .75)'
+            }),
+            'ropi': this.getChartRecordFormat(time, {
+                label: 'ropi', data: ropi, borderColor: 'rgba(0, 97, 166, .75)'
+            }),
+            'scfm': this.getChartRecordFormat(time, {
+                label: 'scfm', data: scfm, borderColor: 'rgba(0, 97, 166, .75)'
+            }),
+            'depth': this.getChartRecordFormat(time, {
+                label: 'depth', data: depth, borderColor: 'rgba(0, 166, 113, .75)'
+            }),
+            'torque': this.getChartRecordFormat(time, {
+                label: 'torque', data: torque, borderColor: 'rgba(166, 0, 86, .75)'
+            }),
+            'bvdepth': this.getChartRecordFormat(time, {
+                label: 'bvdepth', data: bvdepth, borderColor: 'rgba(0, 166, 158, .75)'
+            }),
+            'bitdepth': this.getChartRecordFormat(time, {
+                label: 'bitdepth', data: bitdepth, borderColor: 'rgba(166, 161, 0, .75)'
+            }),
+            'stppress': this.getChartRecordFormat(time, {
+                label: 'stppress', data: stppress, borderColor: 'rgba(166, 0, 136, .75)'
+            }),
+            'hookload': this.getChartRecordFormat(time, {
+                label: 'hookload', data: hookload, borderColor: 'rgba(0, 166, 158, .75)'
+            }),
+            'blockpos': this.getChartRecordFormat(time, {
+                label: 'blockpos', data: blockpos, borderColor: 'rgba(195, 112, 155, 0.8)'
+            }),
+            'mudflowout': this.getChartRecordFormat(time, {
+                label: 'mudflowout', data: mudflowout, borderColor: 'rgba(166, 0, 136, .75)'
+            }),
+            'mudflowin': this.getChartRecordFormat(time, {
+                label: 'mudflowin', data: mudflowin, borderColor: 'rgba(166, 0, 136, .75)'
+            }),
+        };
+    };
+
     ChartSensors.prototype.getChartConfig = function (labels, datasets, yWidth = 70) {
         return {
             type: 'line',
@@ -365,6 +456,8 @@
     }
 
     ChartSensors.prototype.setNewChartData1 = async function (chart, newData) {
+        console.log('newData:', newData);
+
         chart.data.labels.push(...newData.labels);
         chart.data.datasets.forEach((dataset, i) => {
             console.log('does not executed here');
@@ -397,6 +490,46 @@
         chart.update();
     }
 
+    ChartSensors.prototype.setNewChartData2 = async function (chart, newData) {
+        chart.data.labels.push(...newData.labels);
+
+        if (!chart.data.datasets.length && newData.datasets.length) {
+            chart.data.datasets = newData.datasets.map(d => ({
+                ...d,
+                data: [...d.data]
+            }));
+        } else {
+            chart.data.datasets.forEach((dataset, i) => {
+                dataset.data.push(...newData.datasets[i].data);
+            });
+        }
+
+        const uniqueLabels = [];
+        const uniqueIndices = [];
+        const seenLabels = new Set();
+
+        chart.data.labels.forEach((label, index) => {
+            if (!seenLabels.has(label)) {
+                seenLabels.add(label);
+                uniqueLabels.push(label);
+                uniqueIndices.push(index);
+            }
+        });
+
+        chart.data.labels = uniqueLabels;
+        chart.data.datasets.forEach(dataset => {
+            dataset.data = uniqueIndices.map(index => dataset.data[index]);
+        });
+
+        if (chart.data.labels.length > 120) {
+            const excess = chart.data.labels.length - 120;
+            chart.data.labels.splice(0, excess);
+            chart.data.datasets.forEach(d => d.data.splice(0, excess));
+        }
+
+        chart.update();
+    }
+
     ChartSensors.prototype.setNewChartUpdate = async function () {
         await this.getChartRecords(60000);
         await Promise.all([
@@ -416,16 +549,39 @@
     ChartSensors.prototype.setNewPredictionChartData = async function (range) {
         const records = await this.getSpecificChartRecords(range);
         
-        await this.setNewChartData1(this.chartVdepth, records['depth']);
-        await this.setNewChartData1(this.chartVwob, records['wob']);
-        await this.setNewChartData1(this.chartVrpm, records['rpm']);
-        await this.setNewChartData1(this.chartVhkld, records['hookload']);
-        await this.setNewChartData1(this.chartVropi, records['ropi']);
-        await this.setNewChartData1(this.chartVtorque, records['torque']);
-        await this.setNewChartData1(this.chartVbvdepth, records['bvdepth']);
-        await this.setNewChartData1(this.chartVbitdepth, records['bitdepth']);
-        await this.setNewChartData1(this.chartVblockpos, records['blockpos']);
-        await this.setNewChartData1(this.chartVstppress, records['stppress']);
+        await Promise.all([
+            await this.setNewChartData2(this.chartVdepth, records['depth']),
+            await this.setNewChartData2(this.chartVwob, records['wob']),
+            await this.setNewChartData2(this.chartVrpm, records['rpm']),
+            await this.setNewChartData2(this.chartVhkld, records['hookload']),
+            await this.setNewChartData2(this.chartVropi, records['ropi']),
+            await this.setNewChartData2(this.chartVtorque, records['torque']),
+            await this.setNewChartData2(this.chartVbvdepth, records['bvdepth']),
+            await this.setNewChartData2(this.chartVbitdepth, records['bitdepth']),
+            await this.setNewChartData2(this.chartVblockpos, records['blockpos']),
+            await this.setNewChartData2(this.chartVstppress, records['stppress']),
+        ]);
+    }
+
+    ChartSensors.prototype.setNewRandomHistoryData = async function() {
+        await this.getNChartRecords();
+        await Promise.all([
+            this.setNewChartData2(this.chartVwob, this.vrecords['wob']),
+            this.setNewChartData2(this.chartVrpm, this.vrecords['rpm']),
+            this.setNewChartData2(this.chartVhkld, this.vrecords['hookload']),
+            this.setNewChartData2(this.chartVropi, this.vrecords['ropi']),
+            this.setNewChartData2(this.chartVdepth, this.vrecords['depth']),
+            this.setNewChartData2(this.chartVtorque, this.vrecords['torque']),
+            this.setNewChartData2(this.chartVbvdepth, this.vrecords['bvdepth']),
+            this.setNewChartData2(this.chartVbitdepth, this.vrecords['bitdepth']),
+            this.setNewChartData2(this.chartVblockpos, this.vrecords['blockpos']),
+            this.setNewChartData2(this.chartVstppress, this.vrecords['stppress']),
+        ]);
+
+        const con = document.getElementById('prediction-charts');
+        if (con.classList.contains('d-none')) {
+            con.classList.remove('d-none')
+        }
     }
 
     ChartSensors.prototype.initCharts = async function () {

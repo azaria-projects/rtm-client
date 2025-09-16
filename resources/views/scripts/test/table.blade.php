@@ -221,42 +221,96 @@
             { class: 'text-center', targets: [1,2,3] },
             { class: 'd-none d-xl-table-cell', targets: [2,3] }
         ];
+        this.dummy = [
+            {
+                id: 1, date: '2025-09-01T08:00:00.000Z', record_st: '2025-09-01T07:00:00.000Z', record_en: '2025-09-01T08:00:00.000Z',
+                well_tk: 'TK001', well_id: 'WELL001', stats_sr: true, stats_cr: false, stats_rt: false, stats_sl: 'false',
+                stats_cl: true, well_pr: 0, message: 'Normal operation'
+            },
+            {
+                id: 2, date: '2025-09-02T09:15:00.000Z', record_st: '2025-09-02T08:00:00.000Z', record_en: '2025-09-02T09:00:00.000Z',
+                well_tk: 'TK002', well_id: 'WELL002', stats_sr: false, stats_cr: true, stats_rt: true, stats_sl: 'true',
+                stats_cl: false, well_pr: 1, message: 'Issue detected'
+            },
+            {
+                id: 3, date: '2025-09-03T10:30:00.000Z', record_st: '2025-09-03T09:30:00.000Z', record_en: '2025-09-03T10:00:00.000Z',
+                well_tk: 'TK003', well_id: 'WELL003', stats_sr: true, stats_cr: true, stats_rt: false, stats_sl: 'false',
+                stats_cl: true, well_pr: 0, message: 'All systems go'
+            },
+            {
+                id: 4, date: '2025-09-04T11:45:00.000Z', record_st: '2025-09-04T10:45:00.000Z', record_en: '2025-09-04T11:30:00.000Z',
+                well_tk: 'TK004', well_id: 'WELL004', stats_sr: false, stats_cr: false, stats_rt: true, stats_sl: 'true',
+                stats_cl: false, well_pr: 2, message: 'Unknown error'
+            },
+            {
+                id: 5, date: '2025-09-05T12:00:00.000Z', record_st: '2025-09-05T11:00:00.000Z', record_en: '2025-09-05T12:00:00.000Z',
+                well_tk: 'TK005', well_id: 'WELL005', stats_sr: true, stats_cr: false, stats_rt: false, stats_sl: 'false',
+                stats_cl: true, well_pr: 0, message: 'Operational'
+            },
+            {
+                id: 6, date: '2025-09-06T13:15:00.000Z', record_st: '2025-09-06T12:15:00.000Z', record_en: '2025-09-06T13:00:00.000Z',
+                well_tk: 'TK006', well_id: 'WELL006', stats_sr: true, stats_cr: true, stats_rt: true, stats_sl: 'true',
+                stats_cl: false, well_pr: 1, message: 'Multiple alerts'
+            },
+            {
+                id: 7, date: '2025-09-07T14:30:00.000Z', record_st: '2025-09-07T13:30:00.000Z', record_en: '2025-09-07T14:00:00.000Z',
+                well_tk: 'TK007', well_id: 'WELL007', stats_sr: false, stats_cr: false, stats_rt: false, stats_sl: 'false',
+                stats_cl: true, well_pr: 0, message: 'Idle'
+            },
+            {
+                id: 8, date: '2025-09-08T15:45:00.000Z', record_st: '2025-09-08T14:45:00.000Z', record_en: '2025-09-08T15:30:00.000Z',
+                well_tk: 'TK008', well_id: 'WELL008', stats_sr: true, stats_cr: false, stats_rt: true, stats_sl: 'true',
+                stats_cl: false, well_pr: 2, message: 'Investigate'
+            },
+            {
+                id: 9, date: '2025-09-09T16:00:00.000Z', record_st: '2025-09-09T15:00:00.000Z', record_en: '2025-09-09T16:00:00.000Z',
+                well_tk: 'TK009', well_id: 'WELL009', stats_sr: true, stats_cr: true, stats_rt: false, stats_sl: 'false',
+                stats_cl: true, well_pr: 0, message: 'Nominal'
+            },
+            {
+                id: 10, date: '2025-09-10T17:15:00.000Z', record_st: '2025-09-10T16:15:00.000Z', record_en: '2025-09-10T17:00:00.000Z',
+                well_tk: 'TK010', well_id: 'WELL010', stats_sr: false, stats_cr: true, stats_rt: true, stats_sl: 'true',
+                stats_cl: false, well_pr: 1, message: 'High pressure warning'
+            },
+            {
+                id: 11, date: '2025-09-11T18:30:00.000Z', record_st: '2025-09-11T17:30:00.000Z', record_en: '2025-09-11T18:00:00.000Z',
+                well_tk: 'TK011', well_id: 'WELL011', stats_sr: true, stats_cr: false, stats_rt: false, stats_sl: 'false',
+                stats_cl: true, well_pr: 0, message: 'Monitoring'
+            },
+            {
+                id: 12, date: '2025-09-12T19:45:00.000Z', record_st: '2025-09-12T18:45:00.000Z', record_en: '2025-09-12T19:30:00.000Z',
+                well_tk: 'TK012', well_id: 'WELL012', stats_sr: false, stats_cr: true, stats_rt: false, stats_sl: 'true',
+                stats_cl: false, well_pr: 2, message: 'Check sensor'
+            },
+            {
+                id: 13, date: '2025-09-13T20:00:00.000Z', record_st: '2025-09-13T19:00:00.000Z', record_en: '2025-09-13T20:00:00.000Z',
+                well_tk: 'TK013', well_id: 'WELL013', stats_sr: true, stats_cr: true, stats_rt: true, stats_sl: 'false',
+                stats_cl: true, well_pr: 0, message: 'Stable'
+            },
+            {
+                id: 14, date: '2025-09-14T21:15:00.000Z', record_st: '2025-09-14T20:15:00.000Z', record_en: '2025-09-14T21:00:00.000Z',
+                well_tk: 'TK014', well_id: 'WELL014', stats_sr: false, stats_cr: false, stats_rt: true, stats_sl: 'true',
+                stats_cl: false, well_pr: 1, message: 'Shut down'
+            },
+            {
+                id: 15, date: '2025-09-15T22:30:00.000Z', record_st: '2025-09-15T21:30:00.000Z', record_en: '2025-09-15T22:00:00.000Z',
+                well_tk: 'TK015', well_id: 'WELL015', stats_sr: true, stats_cr: false, stats_rt: false, stats_sl: 'false',
+                stats_cl: true, well_pr: 0, message: 'System ready'
+            }
+        ];
     }
 
-    TableRTM.prototype.initTable = async function () {
+    TableRTM.prototype.initTable = async function () {  
         const table = $(`#${this.tableId}`).DataTable({
             pagingType: 'full',
             paging: true,
             ordering: false,
             searching: false,
-            processing: true,
-            serverSide: true,
+            processing: false,
+            serverSide: false,
             responsive: false,
             autoWidth: false,
-            ajax: function(data, callback, settings) {
-                const bse = `${baseurl}/${baseprefix}/log`;
-                const pge = Math.floor(data.start / data.length) + 1;
-                const nme = @json($nme);
-                const par = new URLSearchParams({
-                    'name' : nme,
-                    'count': data.length,
-                    'page' : pge,
-                    'start': '2000-01-01 00:00:00',
-                    'end'  : '2025-08-07 07:31:53'
-                }).toString();
-
-                $.ajax({
-                    url: `${bse}?${par}`,
-                    success: function(json) {
-                        callback({
-                            draw: data.draw,
-                            recordsTotal: json.response.total,
-                            recordsFiltered: json.response.total,
-                            data: json.response.data
-                        });
-                    }
-                });
-            },
+            data: this.dummy,
             columns: this.columns,
             columnDefs: this.columnDefs,
             initComplete: function() {
@@ -268,13 +322,14 @@
         $(`#${this.tableId}`).on('processing.dt', function(e, settings, processing) {
             if (processing) {
                 $('.dt-processing').addClass('dt-load');
+
             } else {
                 $('.dt-processing').removeClass('dt-load');
             }
         });
 
         $(document).on('click', '.btn-refresh', function() {
-            table.ajax.reload(null, false);
+            // table.ajax.reload(null, false);
         });
 
         $('.page-link[data-dt-idx="0"]').trigger('click');

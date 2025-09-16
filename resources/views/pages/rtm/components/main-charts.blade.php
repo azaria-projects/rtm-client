@@ -27,7 +27,7 @@
 
             <div class="col-12">
                 <div class="btn-group-horizontal gap-2" role="group" style="width: fit-content;">
-                    <button id="btn-filter" type="button" class="btn btn-primary d-flex align-items-center gap-2 mx-0 mt-2"> 
+                    <button id="btn-filter" type="button" class="btn btn-primary d-flex align-items-center gap-2 mx-0 mt-2" style="min-height: fit-content; height: fit-content;"> 
                         <i class="ti ti-brand-apple-arcade" style="font-size: 1.2rem;"></i>
                         Apply
                     </button>

@@ -15,16 +15,6 @@
 
         @include('layouts.sidebar')
 
-        {{-- <main class="app-main">
-            @include('layouts.header')
-
-            <div class="app-content">
-                <div class="container-fluid">
-                    @yield('content')
-                </div>
-            </div>
-        </main> --}}
-
         <main class="app-main">
             @include('components.loading')
             
