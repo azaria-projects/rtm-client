@@ -2,6 +2,24 @@
 
 @push('scripts-body')
     <script>
+        function getCurrentDateTime(wkd = 'long', mnt = 'long') {
+            const now = new Date();
+            const options = { 
+                weekday : wkd, 
+                month   : mnt, 
+                day     : 'numeric', 
+                year    : 'numeric',
+                hour    : '2-digit', 
+                minute  : '2-digit', 
+                second  : '2-digit',
+                hour12  : false 
+            };
+
+            const formatted = now.toLocaleDateString('en-US', options).replace(',', '');
+            document.getElementById('date-time').textContent = formatted;
+            setTimeout(() => getCurrentDateTime(wkd, mnt), 1000);
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             getCurrentDateTime();
             
@@ -24,18 +42,33 @@
                 const url = `${baseurl}/api/token`;
                 const pyd = getPayload(e.target.elements);
                 const res = await post(url, pyd).then(data => data).catch(error => error);
+                
+                if (res === undefined) {
+                    txt.textContent = 'Login';
+                    spn.classList.add('d-none');
+                    btn.disabled    = false;
+
+                    toastr.error('server is currently unavailable!');
+                }
 
                 if (res.status) {
                     document.cookie = `token=${JSON.stringify(res.response)}; path=/`;
                     window.location.href = "{{ route('rtm.select') }}";
                     return;
+
+                } else {
+                    txt.textContent = 'Login';
+                    spn.classList.add('d-none');
+                    btn.disabled    = false;
+
+                    toastr.error('Your credentials does not match!');    
                 }
 
                 txt.textContent = 'Login';
                 spn.classList.add('d-none');
                 btn.disabled    = false;
 
-                toastr.error('Your credentials does not match!');
+                toastr.error('unknown error! please contact the administrator!');
             });
         })
     </script>

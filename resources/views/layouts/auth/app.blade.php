@@ -16,7 +16,7 @@
         </main>
     </div>
 
-    @include('layouts.scripts')
+    @include('layouts.auth.scripts')
 
     @stack('scripts-body')
 </body>

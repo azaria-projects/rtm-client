@@ -4,11 +4,6 @@ import 'sortablejs';
 import 'apexcharts';
 import 'sweetalert2';
 
-// import '@fontsource/inria-sans';
-// import '@fontsource/inria-sans/300.css';
-// import '@fontsource/inria-sans/400.css';
-// import '@fontsource/inria-sans/700.css';
-
 import toastr from 'toastr';
 import tippy from 'tippy.js';
 import Swal from 'sweetalert2';

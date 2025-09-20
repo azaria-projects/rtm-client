@@ -4,6 +4,8 @@ import laravel from 'laravel-vite-plugin';
 async function getConfig() {
     const paths = [
         'resources/js/app.js',
+        'resources/js/app-login.js',
+
         'resources/css/app.css',
         'resources/css/sidebar.css',
         'resources/css/navbar.css',
