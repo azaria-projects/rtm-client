@@ -1,0 +1,11 @@
+{
+    "name": "MudlogDigitator",
+    "alias": "mudlogdigitator",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\MudlogDigitator\\Providers\\MudlogDigitatorServiceProvider"
+    ],
+    "files": []
+}

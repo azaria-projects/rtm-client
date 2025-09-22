@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/mudlogdigitator",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\MudlogDigitator\\": "app/",
+            "Modules\\MudlogDigitator\\Database\\Factories\\": "database/factories/",
+            "Modules\\MudlogDigitator\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\MudlogDigitator\\Tests\\": "tests/"
+        }
+    }
+}

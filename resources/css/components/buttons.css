@@ -7,6 +7,20 @@
     }
 }
 
+.btn-content {
+    width: fit-content !important;
+    font-size: 14px;
+    min-height: 0px !important;
+    font-weight: 700;
+    letter-spacing: .5px !important;
+
+    display: flex;
+    gap: 4px;
+    padding: 8px 12px;
+    align-items: center;
+    text-transform: uppercase;
+}
+
 .btn-group-vertical button {
     border-radius: calc(var(--system-border-base) - 4px) !important;
 }

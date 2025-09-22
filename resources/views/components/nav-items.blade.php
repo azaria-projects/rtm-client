@@ -1,4 +1,4 @@
-<li class="nav-item d-none d-{{ $br ?? 'xl' }}-block" style="pointer-events: none;">
+<li class="nav-item d-none d-{{ $br ?? 'xl' }}-flex align-items-center" style="pointer-events: none;">
     <a href="#" class="nav-link info-box">
         <span class="info-box-icon text-bg-primary shadow-sm"> <i class="ti {{ $ic ?? 'ti-brand-databricks' }}"></i> </span>
         <div class="info-box-content">
