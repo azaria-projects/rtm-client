@@ -35,7 +35,7 @@
 
         #mudlog-detection-area {
             max-height: 600px;
-            overflow-y: scroll;
+            overflow: scroll;
         }
 
         .app-main {
@@ -105,6 +105,12 @@
                 flex-grow: 1;
                 min-height: 0;
             }
+        }
+
+        .form-control:focus {
+            border: none !important;
+            border-color: transparent !important;
+            box-shadow: none !important;
         }
 
         @media(max-width: 576px) {

@@ -322,9 +322,8 @@
             context.setTransform(1, 0, 0, 1, 0, 0);
             context.clearRect(0, 0, canvas.width, canvas.height);
             context.setTransform(scale, 0, 0, scale, offset.x, offset.y);
-            context.drawImage(img, 0, 0, 600, img.height, 0, 0, 600 * scale, img.height * scale);
+            context.drawImage(img, 0, 0);
         }
-
 
         function getImageCoords(canvas, scale, offset, clientX, clientY) {
             const rect = canvas.getBoundingClientRect();
@@ -359,6 +358,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', async function () {
+            const btnDetectColor      = document.getElementById('btn-color');
+            const btnDetectLineData   = document.getElementById('btn-detect');
             const btnUploadFileMudlog = document.getElementById('placeholder-upload-mudlog-document');
 
             const mudlogUpload  = document.getElementById('input-mudlog-document');
@@ -376,8 +377,76 @@
             let dragStart   = { x: 0, y: 0 };
             let mode        = 'detect'; 
 
+            btnDetectColor.addEventListener('click', async function () {
+                if ('EyeDropper' in window) {
+                    try {
+                        const eyeDropper = new EyeDropper();
+                        const result = await eyeDropper.open();
+                        await navigator.clipboard.writeText(result.sRGBHex);
+                        console.log(result.sRGBHex);
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+            });
+
             btnUploadFileMudlog.addEventListener('click', function () {
                 mudlogUpload.click();
+            });
+
+            btnDetectLineData.addEventListener('click', async function () {
+                const formData = new FormData();
+                const image    = mudlogUpload.files[0]
+                const end      = document.getElementById('input-depth-end');
+                const unit     = document.getElementById('select-depth-unit');
+                const start    = document.getElementById('input-depth-start');
+                const interval = document.getElementById('input-depth-interval');
+                const type     = document.getElementById('select-depth-file-type');
+
+                const y_calibration = { 
+                    'end'   : end.value,
+                    'unit'  : unit.value,
+                    'start' : start.value
+                };
+
+                const x_calibration = {};
+                const x_data = document.getElementById('input-calibration-x-container').childElementCount;
+                for (let i = 1; i < x_data+1; i++) {
+                    const minVal = document.getElementById(`input-cal-min-${i}`).value;
+                    const maxVal = document.getElementById(`input-cal-max-${i}`).value;
+                    const color  = document.getElementById(`input-cal-color-${i}`).value;
+                    const sensor = document.getElementById(`input-cal-sensor-${i}`).value;
+
+                    x_calibration[sensor] = {
+                        'min'   : parseFloat(minVal),
+                        'max'   : parseFloat(maxVal),
+                        'color' : color.toUpperCase()
+                    }
+                }
+
+                console.log({
+                    'image' : image,
+                    'x_calibration' : x_calibration,
+                    'y_calibration' : y_calibration
+                });
+
+                formData.append('image', image);
+                formData.append('x_calibration' : x_calibration);
+                formData.append('y_calibration' : y_calibration);
+
+                swal.fire(getSwalConfLoading('Processing', 'processing mudlog data please wait!'));
+
+                fetch('http://127.0.0.1:5100/api/detect', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => { 
+                    swal.fire(getSwalConf('success', 'Data Extracted!', 'Modlog digitation is completed!')); 
+                })
+                .catch(error => { 
+                    swal.fire(getSwalConf('error', 'Unable to Extract Data!', 'Please contact the administrator!'));    
+                });
             });
 
             mudlogUpload.addEventListener('change', e => {
@@ -388,23 +457,19 @@
 
                 reader.onload = e => {
                     img.onload = () => {
-                        scale  = 1;   // Set initial scale
-                        offset = { x: 0, y: 0 };   // Set initial offset
+                        scale  = 1;
+                        offset = { x: 0, y: 0 };
 
-                        // Set canvas width and height to fit the first 600px of the image
-                        mudlogCanvas.width  = 600 * scale;
-                        mudlogCanvas.height = img.height * scale;
+                        mudlogCanvas.width     = img.width;
+                        mudlogCanvas.height    = img.height;
 
-                        // Now, draw the image (only the first 600px width)
                         draw(mudlogCanvas, mudlogContext, scale, offset, img);
 
-                        // Get image data after the first 600px has been drawn
                         mudlogContext.setTransform(1, 0, 0, 1, 0, 0);
                         mudlogContext.clearRect(0, 0, mudlogCanvas.width, mudlogCanvas.height);
-                        mudlogContext.drawImage(img, 0, 0, 600, img.height, 0, 0, 600 * scale, img.height * scale);
-                        imgData = mudlogContext.getImageData(0, 0, 600, img.height);  // Get image data for the cropped portion
+                        mudlogContext.drawImage(img, 0, 0);
+                        imgData = mudlogContext.getImageData(0, 0, img.width, img.height);
 
-                        // Redraw if needed
                         draw(mudlogCanvas, mudlogContext, scale, offset, img);
                     };
                     
@@ -420,124 +485,6 @@
 
                 document.getElementById('placeholder-upload-mudlog-document').classList.add('d-none');
                 document.getElementById('mudlog-detection-canvas').classList.remove('d-none');
-            });
-
-            mudlogCanvas.addEventListener('mousemove', e => {
-                if (mode !== 'detect') {
-                    mudlogTooltip.style.display = 'none';
-                    return;
-                }
-
-                const rect = mudlogCanvas.getBoundingClientRect();
-                const canvasX = e.clientX - rect.left;
-                const canvasY = e.clientY - rect.top;
-
-                const { x, y } = getImageCoords(mudlogCanvas, scale, offset, e.clientX, e.clientY);
-                const color = getPixelColor(imgData, x, y);
-
-                if (!color) {
-                    mudlogTooltip.style.display = 'none';
-                    return;
-                }
-
-                const hex = rgbToHex(color);
-                mudlogTooltip.style.left    = (e.clientX + 10) + 'px';
-                mudlogTooltip.style.top     = (e.clientY + 10) + 'px';
-                mudlogTooltip.style.color   = (color.r + color.g + color.b > 400) ? '#000' : '#fff';
-                mudlogTooltip.textContent   = hex;
-                mudlogTooltip.style.display = 'block';
-                mudlogTooltip.style.backgroundColor = hex;
-
-                draw(mudlogCanvas, mudlogContext, scale, offset, img);
-
-                mudlogContext.save();
-                mudlogContext.setTransform(scale, 0, 0, scale, offset.x, offset.y);
-                mudlogContext.setLineDash([2, 4]);
-                mudlogContext.strokeStyle = 'rgba(255, 0, 0, 0.8)';
-                mudlogContext.lineWidth = 1 / scale;
-
-                mudlogContext.beginPath();
-                mudlogContext.moveTo(x + 0.5, 0);
-                mudlogContext.lineTo(x + 0.5, img.height);
-                mudlogContext.stroke();
-                mudlogContext.beginPath();
-                mudlogContext.moveTo(0, y + 0.5);
-                mudlogContext.lineTo(img.width, y + 0.5);
-                mudlogContext.stroke();
-
-                mudlogContext.restore();
-
-                console.log({
-                    clientX: e.clientX,
-                    clientY: e.clientY,
-                    imageX: x,
-                    imageY: y
-                });
-            });
-
-            mudlogCanvas.addEventListener('mouseleave', () => {
-                mudlogTooltip.style.display = 'none';
-            });
-
-            mudlogCanvas.addEventListener('click', async e => {
-                if (mode !== 'detect') return;
-
-                const { x, y } = getImageCoords(mudlogCanvas ,scale, offset, e.clientX, e.clientY);
-                const color    = getPixelColor(imgData, x, y);
-
-                console.log(color);
-
-                if (!color) return;
-
-                const hex = rgbToHex(color);
-
-                try {
-                    await navigator.clipboard.writeText(hex);
-
-                    const originalText  = mudlogTooltip.textContent;
-                    mudlogTooltip.textContent = 'copied!';
-
-                    if (tooltipResetTimeout) clearTimeout(tooltipResetTimeout);
-
-                    tooltipResetTimeout = setTimeout(() => {
-                        mudlogTooltip.textContent = originalText;
-                    }, 1000);
-
-                } catch (err) {
-                    console.error('Failed to copy color to clipboard', err);
-                }
-            });
-
-            mudlogCanvas.addEventListener('mousedown', e => {
-                if (mode !== 'zoom') return;
-
-                isDragging = true;
-                dragStart  = { x: e.clientX - offset.x, y: e.clientY - offset.y };
-                mudlogCanvas.style.cursor = 'grabbing';
-            });
-
-            mudlogCanvas.addEventListener('mouseup', e => {
-                if (mode !== 'zoom') return;
-
-                isDragging = false;
-                mudlogCanvas.style.cursor = 'crosshair';
-            });
-
-            mudlogCanvas.addEventListener('mouseout', e => {
-                if (mode !== 'zoom') return;
-
-                isDragging = false;
-                mudlogCanvas.style.cursor = 'crosshair';
-            });
-
-            mudlogCanvas.addEventListener('mousemove', e => {
-                if (mode !== 'zoom') return;
-                if (!isDragging) return;
-
-                offset.x = e.clientX - dragStart.x;
-                offset.y = e.clientY - dragStart.y;
-                
-                draw(mudlogCanvas, mudlogContext, scale, offset, img);
             });
         });
     </script>

@@ -16,6 +16,11 @@
                         <span>color</span>
                     </button>
 
+                    <a id="btn-detect" class="btn btn-tetiary btn-content">
+                        <i class="ti ti-cpu"></i>
+                        <span>process</span>
+                    </a>
+
                     <a id="btn-download-file" class="btn btn-tetiary btn-content">
                         <i class="ti ti-device-floppy"></i>
                         <span>download</span>
