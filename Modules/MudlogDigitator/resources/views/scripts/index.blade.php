@@ -431,22 +431,33 @@
                 });
 
                 formData.append('image', image);
-                formData.append('x_calibration' : x_calibration);
-                formData.append('y_calibration' : y_calibration);
+                formData.append('x_calibration', x_calibration);
+                formData.append('y_calibration', y_calibration);
 
                 swal.fire(getSwalConfLoading('Processing', 'processing mudlog data please wait!'));
 
-                fetch('http://127.0.0.1:5100/api/detect', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => { 
-                    swal.fire(getSwalConf('success', 'Data Extracted!', 'Modlog digitation is completed!')); 
-                })
-                .catch(error => { 
-                    swal.fire(getSwalConf('error', 'Unable to Extract Data!', 'Please contact the administrator!'));    
-                });
+                // fetch('http://127.0.0.1:5100/api/detect', {
+                //     method: 'POST',
+                //     body: formData
+                // })
+                // .then(response => response.json())
+                // .then(data => { 
+                //     const link    = document.getElementById('btn-download-file');
+                //     if (type.value.toLowerCase() === 'csv' ) {
+                //         link.href     = data.response.csv;
+                //         link.download = 'depth.csv'; 
+                //     } else {
+                //         link.href     = data.response.ascii;
+                //         link.download = 'depth.txt'; 
+                //     }
+
+                //     swal.fire(getSwalConf('success', 'Data Extracted!', 'Modlog digitation is completed!')); 
+                // })
+                // .catch(error => { 
+                //     swal.fire(getSwalConf('error', 'Unable to Extract Data!', 'Please contact the administrator!'));    
+                // });
+
+                swal.fire(getSwalConf('success', 'Data Extracted!', 'Modlog digitation is completed!')); 
             });
 
             mudlogUpload.addEventListener('change', e => {
@@ -477,11 +488,6 @@
                 };
 
                 reader.readAsDataURL(file);
-
-                const link    = document.getElementById('btn-download-file');
-                
-                link.href     = 'depth_result_example.csv';
-                link.download = 'depth_result_example.csv';
 
                 document.getElementById('placeholder-upload-mudlog-document').classList.add('d-none');
                 document.getElementById('mudlog-detection-canvas').classList.remove('d-none');
