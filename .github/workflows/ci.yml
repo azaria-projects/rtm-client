@@ -59,7 +59,7 @@ jobs:
           docker image prune -f || true
           
           docker run -d \
-            -p 8000:8000 \
+            -p 8101:8101 \
             --network pdu-network \
             --name rtm-client \
             ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
