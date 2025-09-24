@@ -60,6 +60,6 @@ jobs:
           
           docker run -d \
             -p 8000:8000 \
-            --network network \
+            --network pdu-network \
             --name rtm-client \
             ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
