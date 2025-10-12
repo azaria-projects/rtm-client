@@ -12,4 +12,3 @@ Route::prefix('mudlog-digitator')->group(function () {
         Route::get('/', 'index')->name('mudlog-digitator.index');
     });
 });
-
