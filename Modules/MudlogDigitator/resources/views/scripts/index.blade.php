@@ -404,9 +404,9 @@
                 const type     = document.getElementById('select-depth-file-type');
 
                 const y_calibration = { 
-                    'end'   : end.value,
+                    'end'   : parseFloat(end.value),
                     'unit'  : unit.value,
-                    'start' : start.value
+                    'start' : parseFloat(start.value)
                 };
 
                 const x_calibration = {};
@@ -426,38 +426,40 @@
 
                 console.log({
                     'image' : image,
-                    'x_calibration' : x_calibration,
-                    'y_calibration' : y_calibration
+                    'x_calibration' : JSON.stringify(x_calibration),
+                    'y_calibration' : JSON.stringify(y_calibration)
                 });
 
                 formData.append('image', image);
-                formData.append('x_calibration', x_calibration);
-                formData.append('y_calibration', y_calibration);
+                formData.append('x_calibration', JSON.stringify(x_calibration));
+                formData.append('y_calibration', JSON.stringify(y_calibration));
 
                 swal.fire(getSwalConfLoading('Processing', 'processing mudlog data please wait!'));
 
-                // fetch('http://127.0.0.1:5100/api/detect', {
-                //     method: 'POST',
-                //     body: formData
-                // })
-                // .then(response => response.json())
-                // .then(data => { 
-                //     const link    = document.getElementById('btn-download-file');
-                //     if (type.value.toLowerCase() === 'csv' ) {
-                //         link.href     = data.response.csv;
-                //         link.download = 'depth.csv'; 
-                //     } else {
-                //         link.href     = data.response.ascii;
-                //         link.download = 'depth.txt'; 
-                //     }
+                fetch('http://127.0.0.1:8102/api/detect', { 
+                    method: 'POST', 
+                    body: formData 
+                })
+                .then(response => response.json())
+                .then(data => { 
+                    const link = document.getElementById('btn-download-file');
+                    console.log(data);
 
-                //     swal.fire(getSwalConf('success', 'Data Extracted!', 'Modlog digitation is completed!')); 
-                // })
-                // .catch(error => { 
-                //     swal.fire(getSwalConf('error', 'Unable to Extract Data!', 'Please contact the administrator!'));    
-                // });
+                    if (type.value.toLowerCase() === 'csv' ) {
+                        link.href     = data.response.csv;
+                        link.download = 'depth.csv'; 
+                    } else {
+                        link.href     = data.response.ascii;
+                        link.download = 'depth.txt'; 
+                    }
 
-                swal.fire(getSwalConf('success', 'Data Extracted!', 'Modlog digitation is completed!')); 
+                    console.log(link.href);
+
+                    swal.fire(getSwalConf('success', 'Data Extracted!', 'Modlog digitation is completed!')); 
+                })
+                .catch(error => { 
+                    swal.fire(getSwalConf('error', 'Unable to Extract Data!', 'Please contact the administrator!'));    
+                });
             });
 
             mudlogUpload.addEventListener('change', e => {
