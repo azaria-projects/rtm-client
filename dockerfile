@@ -32,8 +32,7 @@ RUN rm -rf node_modules package-lock.json \
     && npm install \
     && npm run build
 
-RUN php artisan key:generate \
-    php artisan config:clear \
+RUN php artisan config:clear \
     && php artisan route:clear \
     && php artisan key:generate \
     && php artisan migrate
