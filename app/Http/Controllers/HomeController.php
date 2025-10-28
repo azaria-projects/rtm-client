@@ -40,9 +40,9 @@ class HomeController extends Controller
         $typ = 'Geothermal';
         $chr = array('depth', 'bitdepth', 'bvdepth', 'blockpos', 'torque', 'ropi', 'wob', 'stppress', 'hkld', 'rpm');
 
-        // return view('pages.test.index', compact('sat', 'zon', 'nme', 'tkn', 'com', 'str', 'end', 'typ', 'chr'));
+        return view('pages.test.index', compact('sat', 'zon', 'nme', 'tkn', 'com', 'str', 'end', 'typ', 'chr'));
 
-        return view('layouts.auth.register');
+        // return view('layouts.auth.register');
     }
 
     public function select()
