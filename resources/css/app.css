@@ -146,9 +146,9 @@ body {
     height: 50%;
     z-index: -1;
     opacity: 0.075;
-
+/* 
     transform: rotate(25deg);
-    transform-origin: center;
+    transform-origin: center; */
 }
 
 .login-box, .register-box {
